@@ -1,0 +1,6 @@
+db:
+  username: root
+  password: root
+  name: amc_back
+  host: "127.0.0.1"
+  port: 3307
