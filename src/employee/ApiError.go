@@ -18,6 +18,15 @@ type ApiError struct {
 	Details       string
 }
 
+func NewApiError(code string, err error, details string) *ApiError {
+	e := ApiError{}
+	e.Code = code
+	e.Err = fmt.Sprintf("%s", err)
+	e.Details = details
+	e.init()
+	return &e
+}
+
 func (e *ApiError) init() {
 	if e.ErroUuid == "" {
 		e.ErroUuid = uuid.New().String()
@@ -31,17 +40,5 @@ func (e *ApiError) Enhance(c *gin.Context) {
 }
 
 func (e *ApiError) Error() string {
-	return fmt.Sprintf("status: %v", e.Err)
+	return fmt.Sprintf("Error message : %s", e.Err)
 }
-
-// func GinError(e *ApiError) *gin.H {
-// 	return fmt.Sprintf(
-// 		"code":          e.code,
-// 		"message":       e.err,
-// 		"clientIp":      e.clientIp,
-// 		"requestMethod": e.requestMethod,
-// 		"timeStamp":     e.timeStamp,
-// 		"erroUuid":      e.erroUuid,
-// 		"details":       e.details,
-// 	)
-// }

@@ -21,13 +21,12 @@ func FindEmployeeById(id int) (*Employee, *ApiError) {
 	var employee Employee
 	result := db.First(&employee, id)
 	if result.Error != nil {
-		// log.Fatalf("Could No find employee withId: %d", id)
-		// log.Printf("Could No find employee withId: %d", id)
-		e := ApiError{}
-		e.Err = fmt.Sprintf("%s", result.Error)
-		e.Details = fmt.Sprintf("Could No find employee withId: %d", id)
-		e.init()
-		return nil, &e
+		e := NewApiError(
+			"NOT_FOUND",
+			result.Error,
+			fmt.Sprintf("Could't find employee withId: %d", id),
+		)
+		return nil, e
 	}
 	return &employee, nil
 }
