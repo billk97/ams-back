@@ -1,6 +1,7 @@
 package employee
 
 import (
+	"ams-back/src/amserr"
 	"ams-back/src/database"
 	"fmt"
 	"log"
@@ -16,12 +17,12 @@ func CreateEmploy(employee *Employee) *Employee {
 	return employee
 }
 
-func FindEmployeeById(id int) (*Employee, *ApiError) {
+func FindEmployeeById(id int) (*Employee, *amserr.ApiError) {
 	db := database.GetDb()
 	var employee Employee
 	result := db.First(&employee, id)
 	if result.Error != nil {
-		e := NewApiError(
+		e := amserr.NewApiError(
 			"NOT_FOUND",
 			result.Error,
 			fmt.Sprintf("Could't find employee withId: %d", id),

@@ -4,6 +4,8 @@ import (
 	"ams-back/src/database"
 	"ams-back/src/employee"
 	"ams-back/src/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -11,21 +13,7 @@ func main() {
 	utils.InitYamlConfig()
 	config = utils.Config
 	database.InitDbConnection(config.DB)
-	// e := employee.Employee{
-	// 	FirstName:       "firstName",
-	// 	LastName:        "lastName",
-	// 	JobTitle:        "jobTitle",
-	// 	DirthDate:       time.Now(),
-	// 	Email:           "email",
-	// 	MobileNumber:    "mobileNumber",
-	// 	DidConnectionId: "didConnectionId",
-	// }
-	// database.GetDb().AutoMigrate(&employee.Employee{})
-	// employee.CreateEmploy(&e)
-	// em := employee.GetEmployeeById(5)
-	// fmt.Println(em)
-	// init database pull
-	// create
-	employee.CreateUrlConntroller()
+	r := gin.Default()
+	employee.CreateUrlConntroller(r)
 	employee.Router.Run(":5000")
 }
