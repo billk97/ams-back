@@ -17,4 +17,5 @@ func (a appHandler) HandlerFunc(c *gin.Context) {
 		// todo handle 400, 500 error type differently
 		c.AbortWithStatusJSON(400, err)
 	}
+	c.JSON(200, gin.H{"message": "skata"})
 }

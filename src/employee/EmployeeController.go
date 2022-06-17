@@ -14,21 +14,22 @@ func CreateUrlConntroller(r *gin.Engine) {
 	api := Router.Group("api/employees")
 	{
 		api.GET("/", amserr.ErrorWrapper(GetAll))
-		api.GET("/:id", amserr.ErrorWrapper(GetById))
+		api.GET("/:id", (GetById))
 	}
 }
 
-func GetById(c *gin.Context) *amserr.ApiError {
+func GetById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return err.(*amserr.ApiError)
+		c.JSON(400, err)
+		return
 	}
 	result, err := FindEmployeeById(id)
-	if err != nil {
-		return err.(*amserr.ApiError)
+	if result == nil && err != nil {
+		c.JSON(400, err)
+		return
 	}
-	c.JSON(200, &result)
-	return nil
+	c.JSON(200, result)
 }
 
 func GetAll(c *gin.Context) *amserr.ApiError {
