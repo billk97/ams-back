@@ -1,4 +1,4 @@
-package amserr
+package utils
 
 import (
 	"fmt"

@@ -1,9 +1,9 @@
-package adminusecases
+package usecases
 
 import (
-	"ams-back/src/admin"
 	"ams-back/src/database"
 	"ams-back/src/models"
+	"ams-back/src/repos"
 	"crypto/rand"
 	b64 "encoding/base64"
 	"fmt"
@@ -11,7 +11,7 @@ import (
 )
 
 func CreateSuperAdminIfNotExists() {
-	existingAdmin, err := admin.FindAdminByUsername("superAdmin")
+	existingAdmin, err := repos.FindAdminByUsername("superAdmin")
 	if err != nil {
 		log.Printf("Error In creation of user superAdmin")
 		return

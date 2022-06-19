@@ -1,9 +1,9 @@
 package main
 
 import (
-	"ams-back/src/admin/adminusecases"
+	"ams-back/src/controllers"
 	"ams-back/src/database"
-	"ams-back/src/employee"
+	"ams-back/src/usecases"
 	"ams-back/src/utils"
 
 	"github.com/gin-gonic/gin"
@@ -22,9 +22,9 @@ func main() {
 	config = utils.Config
 	database.InitDbConnection(config.DB)
 	database.Synchronize(database.GetDb())
-	adminusecases.CreateSuperAdminIfNotExists()
+	usecases.CreateSuperAdminIfNotExists()
 	r := gin.Default()
 	r.Use(JSONMiddleware())
-	employee.CreateUrlConntroller(r)
-	employee.Router.Run(":5000")
+	controllers.CreateUrlConntroller(r)
+	controllers.Router.Run(":5000")
 }

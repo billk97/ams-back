@@ -1,8 +1,9 @@
-package employee
+package controllers
 
 import (
-	"ams-back/src/amserr"
 	"ams-back/src/models"
+	"ams-back/src/repos"
+	"ams-back/src/utils"
 	"fmt"
 	"strconv"
 
@@ -28,7 +29,7 @@ func GetById(c *gin.Context) {
 		c.JSON(400, err)
 		return
 	}
-	result, err := FindEmployeeById(id)
+	result, err := repos.FindEmployeeById(id)
 	if result == nil && err != nil {
 		c.JSON(400, err)
 		return
@@ -37,7 +38,7 @@ func GetById(c *gin.Context) {
 }
 
 func GetAll(c *gin.Context) {
-	em, err := FindEmployees(2)
+	em, err := repos.FindEmployees(2)
 
 	if em == nil && err != nil {
 		c.JSON(400, err)
@@ -50,7 +51,7 @@ func CreateEmployee(c *gin.Context) {
 	emp := models.Employee{}
 	err := c.BindJSON(&emp)
 	if err != nil {
-		apiErr := amserr.NewApiError(
+		apiErr := utils.NewApiError(
 			"INVALID_INPUT",
 			err,
 			fmt.Sprintf("Erro serializing json to employee struct"),
@@ -59,7 +60,7 @@ func CreateEmployee(c *gin.Context) {
 		c.JSON(400, apiErr)
 		return
 	}
-	e, err := SaveEmploy(&emp)
+	e, err := repos.SaveEmploy(&emp)
 	if e == nil && err != nil {
 		c.JSON(400, err)
 		return
@@ -77,7 +78,7 @@ func UpdateEmployeeData(c *gin.Context) {
 	emp := models.Employee{}
 	err = c.BindJSON(&emp)
 	if err != nil {
-		apiErr := amserr.NewApiError(
+		apiErr := utils.NewApiError(
 			"INVALID_INPUT",
 			err,
 			fmt.Sprintf("Erro serializing json to employee struct"),
@@ -87,7 +88,7 @@ func UpdateEmployeeData(c *gin.Context) {
 		return
 	}
 	emp.ID = uint(id)
-	e, err := UpdateEmployee(&emp)
+	e, err := repos.UpdateEmployee(&emp)
 	if e == nil && err != nil {
 		c.JSON(400, err)
 		return

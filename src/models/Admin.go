@@ -16,7 +16,7 @@ func (a *Admin) GeneratePasswordHash(password string) error {
 	return nil
 }
 
-func (a *Admin) checkPasswordHash(password string) bool {
+func (a *Admin) CheckPasswordHash(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(a.PasswordHash), []byte(password))
 	return err == nil
 }
