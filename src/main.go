@@ -1,31 +1,30 @@
 package main
 
 import (
+	"ams-back/src/controllers"
 	"ams-back/src/database"
-	"ams-back/src/employee"
+	"ams-back/src/usecases"
 	"ams-back/src/utils"
+
+	"github.com/gin-gonic/gin"
 )
+
+func JSONMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Content-Type", "application/json")
+		c.Next()
+	}
+}
 
 func main() {
 	var config utils.Env
 	utils.InitYamlConfig()
 	config = utils.Config
 	database.InitDbConnection(config.DB)
-	// e := employee.Employee{
-	// 	FirstName:       "firstName",
-	// 	LastName:        "lastName",
-	// 	JobTitle:        "jobTitle",
-	// 	DirthDate:       time.Now(),
-	// 	Email:           "email",
-	// 	MobileNumber:    "mobileNumber",
-	// 	DidConnectionId: "didConnectionId",
-	// }
-	// database.GetDb().AutoMigrate(&employee.Employee{})
-	// employee.CreateEmploy(&e)
-	// em := employee.GetEmployeeById(5)
-	// fmt.Println(em)
-	// init database pull
-	// create
-	employee.CreateUrlConntroller()
-	employee.Router.Run(":5000")
+	database.Synchronize(database.GetDb())
+	usecases.CreateSuperAdminIfNotExists()
+	r := gin.Default()
+	r.Use(JSONMiddleware())
+	controllers.CreateUrlConntroller(r)
+	controllers.Router.Run(":5000")
 }
