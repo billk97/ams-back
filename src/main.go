@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ams-back/src/admin/adminusecases"
 	"ams-back/src/database"
 	"ams-back/src/employee"
 	"ams-back/src/utils"
@@ -20,6 +21,8 @@ func main() {
 	utils.InitYamlConfig()
 	config = utils.Config
 	database.InitDbConnection(config.DB)
+	database.Synchronize(database.GetDb())
+	adminusecases.CreateSuperAdminIfNotExists()
 	r := gin.Default()
 	r.Use(JSONMiddleware())
 	employee.CreateUrlConntroller(r)

@@ -2,6 +2,7 @@ package employee
 
 import (
 	"ams-back/src/amserr"
+	"ams-back/src/models"
 	"fmt"
 	"strconv"
 
@@ -17,6 +18,7 @@ func CreateUrlConntroller(r *gin.Engine) {
 		api.GET("/", GetAll)
 		api.GET("/:id", GetById)
 		api.POST("/", CreateEmployee)
+		api.PUT("/:id", UpdateEmployeeData)
 	}
 }
 
@@ -39,12 +41,13 @@ func GetAll(c *gin.Context) {
 
 	if em == nil && err != nil {
 		c.JSON(400, err)
+		return
 	}
 	c.JSON(200, em)
 }
 
 func CreateEmployee(c *gin.Context) {
-	emp := Employee{}
+	emp := models.Employee{}
 	err := c.BindJSON(&emp)
 	if err != nil {
 		apiErr := amserr.NewApiError(
@@ -52,7 +55,43 @@ func CreateEmployee(c *gin.Context) {
 			err,
 			fmt.Sprintf("Erro serializing json to employee struct"),
 		)
+		apiErr.Enhance(c)
 		c.JSON(400, apiErr)
+		return
 	}
-	// c.Request.Body
+	e, err := SaveEmploy(&emp)
+	if e == nil && err != nil {
+		c.JSON(400, err)
+		return
+	}
+	fmt.Println(e)
+	c.JSON(200, emp)
+}
+
+func UpdateEmployeeData(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, err)
+		return
+	}
+	emp := models.Employee{}
+	err = c.BindJSON(&emp)
+	if err != nil {
+		apiErr := amserr.NewApiError(
+			"INVALID_INPUT",
+			err,
+			fmt.Sprintf("Erro serializing json to employee struct"),
+		)
+		apiErr.Enhance(c)
+		c.JSON(400, apiErr)
+		return
+	}
+	emp.ID = uint(id)
+	e, err := UpdateEmployee(&emp)
+	if e == nil && err != nil {
+		c.JSON(400, err)
+		return
+	}
+	fmt.Println(e)
+	c.JSON(200, emp)
 }

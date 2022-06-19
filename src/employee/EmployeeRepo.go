@@ -3,23 +3,41 @@ package employee
 import (
 	"ams-back/src/amserr"
 	"ams-back/src/database"
+	"ams-back/src/models"
 	"fmt"
-	"log"
 )
 
-func SaveEmploy(employee *Employee) *Employee {
+func SaveEmploy(employee *models.Employee) (*models.Employee, *amserr.ApiError) {
 	db := database.GetDb()
-	db.AutoMigrate(&Employee{})
 	result := db.Create(&employee)
 	if result.Error != nil {
-		log.Fatal("Create employee failed")
+		e := amserr.NewApiError(
+			"PERSIST_ENTITY_FAILED",
+			result.Error,
+			fmt.Sprintf("Could't persist entity of type employee"),
+		)
+		return nil, e
 	}
-	return employee
+	return employee, nil
 }
 
-func FindEmployeeById(id int) (*Employee, *amserr.ApiError) {
+func UpdateEmployee(employee *models.Employee) (*models.Employee, error) {
 	db := database.GetDb()
-	var employee Employee
+	result := db.Save(employee)
+	if result.Error != nil {
+		e := amserr.NewApiError(
+			"PERSIST_ENTITY_FAILED",
+			result.Error,
+			fmt.Sprintf("Could't persist entity of type employee"),
+		)
+		return nil, e
+	}
+	return employee, nil
+}
+
+func FindEmployeeById(id int) (*models.Employee, *amserr.ApiError) {
+	db := database.GetDb()
+	var employee models.Employee
 	result := db.First(&employee, id)
 	if result.Error != nil {
 		e := amserr.NewApiError(
@@ -32,13 +50,13 @@ func FindEmployeeById(id int) (*Employee, *amserr.ApiError) {
 	return &employee, nil
 }
 
-func FindEmployees(page int) (*[]Employee, *amserr.ApiError) {
+func FindEmployees(page int) (*[]models.Employee, *amserr.ApiError) {
 	offset := 0
 	if page > 0 {
 		offset = page - 1
 	}
 	db := database.GetDb()
-	var employees []Employee
+	var employees []models.Employee
 	result := db.
 		Offset(offset).
 		Limit(20).
