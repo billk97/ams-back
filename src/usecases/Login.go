@@ -12,9 +12,14 @@ import (
 func Login(dto dtos.CredentialDto) (*dtos.AccessDto, *utils.ApiError) {
 	user, err := repos.FindAdminByUsername(dto.Username)
 	if err != nil || user == nil {
-		return nil, err
+		return nil, utils.NewApiError(
+			"INVALED_CREDENTIALS",
+			nil,
+			fmt.Sprintf("Credentials are invalid!"),
+		)
 	}
 
+	fmt.Println("here")
 	if !user.CheckPasswordHash(dto.Password) {
 		return nil, utils.NewApiError(
 			"INVALED_CREDENTIALS",

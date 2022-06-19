@@ -10,7 +10,7 @@ import (
 func Synchronize(db *gorm.DB) error {
 	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
 		{
-			ID: "initial",
+			ID: "1",
 			Migrate: func(db *gorm.DB) error {
 				return db.AutoMigrate(models.Employee{})
 			},
@@ -18,17 +18,6 @@ func Synchronize(db *gorm.DB) error {
 		},
 		{
 			ID: "2",
-			Migrate: func(db *gorm.DB) error {
-				err := db.Exec("ALTER TABLE employees DROP COLUMN skata").Error
-				if err != nil {
-					return err
-				}
-				return nil
-			},
-			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("employees") },
-		},
-		{
-			ID: "3",
 			Migrate: func(db *gorm.DB) error {
 				return db.AutoMigrate(models.Admin{})
 			},

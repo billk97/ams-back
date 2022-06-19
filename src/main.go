@@ -26,5 +26,6 @@ func main() {
 	r := gin.Default()
 	r.Use(JSONMiddleware())
 	controllers.CreateUrlConntroller(r)
+	controllers.CreateAdminConntroller(r)
 	controllers.Router.Run(":5000")
 }

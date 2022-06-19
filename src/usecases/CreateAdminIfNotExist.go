@@ -31,5 +31,5 @@ func CreateSuperAdminIfNotExists() {
 	fmt.Printf("SuperAdmin password: %s", string(sEnc))
 	superAdmin.GeneratePasswordHash(string(sEnc))
 	db := database.GetDb()
-	db.Save(superAdmin)
+	db.Save(&superAdmin)
 }
