@@ -1,3 +1,8 @@
 package models
 
-type Permission struct{}
+import "gorm.io/gorm"
+
+type Permission struct {
+	gorm.Model
+	Alias string `json:"alias"`
+}
