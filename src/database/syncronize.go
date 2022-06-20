@@ -23,6 +23,21 @@ func Synchronize(db *gorm.DB) error {
 			},
 			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("admins") },
 		},
+		{
+			ID: "3",
+			Migrate: func(db *gorm.DB) error {
+				return db.AutoMigrate(models.Permission{})
+			},
+			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("permissions") },
+		},
+		{
+			ID: "4",
+			Migrate: func(db *gorm.DB) error {
+				return db.AutoMigrate(models.Resource{})
+			},
+			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("resources") },
+		},
 	})
+
 	return m.Migrate()
 }
