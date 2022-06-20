@@ -4,8 +4,8 @@ import "gorm.io/gorm"
 
 type Resource struct {
 	gorm.Model
-	Alias        string `gorm:"alias"`
-	Description  string `gorm:"description"`
-	Permission   Permission
-	PermissionID int
+	Alias        string     `json:"alias"`
+	Description  string     `json:"description"`
+	Permission   Permission `json:"permission"`
+	PermissionID int        `json:"permissionId" gorm:"default:Null;"`
 }

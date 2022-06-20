@@ -10,11 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var Router *gin.Engine
-
 func CreateUrlConntroller(r *gin.Engine) {
-	Router = r
-	api := Router.Group("api/employees")
+	api := r.Group("api/employees")
 	{
 		api.GET("/", GetAll)
 		api.GET("/:id", GetById)

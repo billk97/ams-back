@@ -27,5 +27,6 @@ func main() {
 	r.Use(JSONMiddleware())
 	controllers.CreateUrlConntroller(r)
 	controllers.CreateAdminConntroller(r)
-	controllers.Router.Run(":5000")
+	controllers.CreateResourceConntroller(r)
+	r.Run(":5000")
 }
