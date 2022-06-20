@@ -21,7 +21,7 @@ func CreateSuperAdminIfNotExists() {
 		return
 	}
 	superAdmin := models.Admin{Username: "superAdmin"}
-	b := make([]byte, 50)
+	b := make([]byte, 20)
 	_, randErr := rand.Read(b)
 	if randErr != nil {
 		log.Printf("Error In password generation")

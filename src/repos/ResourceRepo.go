@@ -23,7 +23,7 @@ func SaveResource(resource *models.Resource) *utils.ApiError {
 
 func UpdateResource(resource *models.Resource) *utils.ApiError {
 	db := database.GetDb()
-	result := db.Save(resource)
+	result := db.Save(&resource)
 	if result.Error != nil {
 		e := utils.NewApiError(
 			"PERSIST_ENTITY_FAILED",
