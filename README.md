@@ -9,9 +9,6 @@ Mermaid diagram.
 ```mermaid
 classDiagram
 Resource "0..*" -->  "1" Permission : Requires
-Resource "0..*" -->  "1" Action : Requires
-ResourceType "0..*" -->  "1" Action 
-Permission "1..*" --> "0..*" Action
 Employee "0..*" -->  "0..*" Permission : Has
 class Admin {
     - int id
@@ -31,7 +28,7 @@ class Employee {
 }
 class Permission {
     - int id
-    - String title
+    - String alias
 }
 class Resource {
     - int id
@@ -41,14 +38,6 @@ class Resource {
 class Action {
     <<enumaration>>
     ACCESS, READ, WRITE, DELETE
-}
-class Sex {
-    <<enumaration>>
-    MALE, FEMALE
-}
-class ResourceType {
-    - int id,
-    - int label
 }
 ```
 
@@ -67,20 +56,28 @@ class ResourceType {
         "permisions": [
             {
                 "id": 1,
-                "alias": "MEETING_ROOM_1",
-                "action": ["ACCESS"]
+                "alias": "MEETING_ROOM_1"
             },
             {
                 "id": 2,
                 "alias": "CAFETERIA",
-                "action": ["ACCESS"]
             },
             {
-                "id": 2,
-                "alias": "S3",
-                "path": "/"
-                "action": ["READ", "WRITE", "DELETE"]
+                "id": 3,
+                "alias": "7:vsk.gr:files/secrets/payrole.pdf"
             },
+            {
+                "id": 4,
+                "alias": "7:vsk.gr:files/secrets/**"
+            },
+            {
+                "id": 5,
+                "alias": "7:vsk.gr:files/secrets/*"
+            },
+            {
+                "id": 6,
+                "alias": "DROPBOX"
+            }
         ],
     },
 
