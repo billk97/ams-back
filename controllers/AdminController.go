@@ -15,11 +15,11 @@ func CreateAdminConntroller(r *gin.Engine) {
 	router = r
 	api := router.Group("api/admin")
 	{
-		api.POST("/login", AdminLogin)
+		api.POST("/login", adminLogin)
 	}
 }
 
-func AdminLogin(c *gin.Context) {
+func adminLogin(c *gin.Context) {
 	dto := dtos.CredentialDto{}
 	err := c.BindJSON(&dto)
 	if err != nil {

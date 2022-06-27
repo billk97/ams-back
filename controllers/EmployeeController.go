@@ -13,14 +13,14 @@ import (
 func CreateUrlConntroller(r *gin.Engine) {
 	api := r.Group("api/employees")
 	{
-		api.GET("/", GetAll)
-		api.GET("/:id", GetById)
-		api.POST("/", CreateEmployee)
-		api.PUT("/:id", UpdateEmployeeData)
+		api.GET("/", getAll)
+		api.GET("/:id", getById)
+		api.POST("/", createEmployee)
+		api.PUT("/:id", updateEmployeeData)
 	}
 }
 
-func GetById(c *gin.Context) {
+func getById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(400, err)
@@ -34,7 +34,7 @@ func GetById(c *gin.Context) {
 	c.JSON(200, result)
 }
 
-func GetAll(c *gin.Context) {
+func getAll(c *gin.Context) {
 	em, err := repos.FindEmployees(2)
 
 	if em == nil && err != nil {
@@ -44,7 +44,7 @@ func GetAll(c *gin.Context) {
 	c.JSON(200, em)
 }
 
-func CreateEmployee(c *gin.Context) {
+func createEmployee(c *gin.Context) {
 	emp := models.Employee{}
 	err := c.BindJSON(&emp)
 	if err != nil {
@@ -66,7 +66,7 @@ func CreateEmployee(c *gin.Context) {
 	c.JSON(200, emp)
 }
 
-func UpdateEmployeeData(c *gin.Context) {
+func updateEmployeeData(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(400, err)
