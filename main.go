@@ -33,7 +33,7 @@ func CORSMiddleware() gin.HandlerFunc {
 
 func main() {
 	var config utils.Env
-	utils.InitYamlConfig()
+	utils.InitEnv()
 	config = utils.Config
 	fmt.Println(config.DB.Name)
 	fmt.Println(config.DB.Username)
