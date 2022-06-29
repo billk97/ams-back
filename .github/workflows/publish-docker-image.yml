@@ -25,7 +25,7 @@ jobs:
         envkey_DB_PORT: 3306
         envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        directory: <directory_name>
+        directory: .
         file_name: .env
         fail_on_empty: false
 
