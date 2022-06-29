@@ -1,6 +1,6 @@
 db:
-  username: DB_USERNAME
-  password: DB_PASSWPRD
-  name: DB_NAME
-  host: DB_HOST
-  port: DB_PORT
+  username: root
+  password: root
+  name: ams_back
+  host: "mysql"
+  port: 3306
