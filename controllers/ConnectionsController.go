@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var host = "http://192.168.1.4:8031/connections"
+var host = "http://acapy:8031/connections"
 
 func CreateConnectionsController(r *gin.Engine) {
 	router = r

@@ -5,6 +5,7 @@ import (
 	database "ams-back/database"
 	usecases "ams-back/usecases"
 	utils "ams-back/utils"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,6 +35,11 @@ func main() {
 	var config utils.Env
 	utils.InitYamlConfig()
 	config = utils.Config
+	fmt.Println(config.DB.Name)
+	fmt.Println(config.DB.Username)
+	fmt.Println(config.DB.Password)
+	fmt.Println(config.DB.Host)
+	fmt.Println(config.DB.Port)
 	database.InitDbConnection(config.DB)
 	database.Synchronize(database.GetDb())
 	usecases.CreateSuperAdminIfNotExists()
