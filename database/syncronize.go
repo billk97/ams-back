@@ -1,7 +1,7 @@
 package database
 
 import (
-	"ams-back/src/models"
+	models "ams-back/models"
 
 	"github.com/go-gormigrate/gormigrate/v2"
 	"gorm.io/gorm"
@@ -10,7 +10,7 @@ import (
 func Synchronize(db *gorm.DB) error {
 	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
 		{
-			ID: "initial",
+			ID: "1",
 			Migrate: func(db *gorm.DB) error {
 				return db.AutoMigrate(models.Employee{})
 			},
@@ -19,21 +19,25 @@ func Synchronize(db *gorm.DB) error {
 		{
 			ID: "2",
 			Migrate: func(db *gorm.DB) error {
-				err := db.Exec("ALTER TABLE employees DROP COLUMN skata").Error
-				if err != nil {
-					return err
-				}
-				return nil
-			},
-			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("employees") },
-		},
-		{
-			ID: "3",
-			Migrate: func(db *gorm.DB) error {
 				return db.AutoMigrate(models.Admin{})
 			},
 			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("admins") },
 		},
+		{
+			ID: "3",
+			Migrate: func(db *gorm.DB) error {
+				return db.AutoMigrate(models.Permission{})
+			},
+			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("permissions") },
+		},
+		{
+			ID: "4",
+			Migrate: func(db *gorm.DB) error {
+				return db.AutoMigrate(models.Resource{})
+			},
+			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("resources") },
+		},
 	})
+
 	return m.Migrate()
 }

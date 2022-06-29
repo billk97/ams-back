@@ -1,7 +1,7 @@
 package database
 
 import (
-	"ams-back/src/utils"
+	utils "ams-back/utils"
 	"fmt"
 	"log"
 
@@ -12,6 +12,7 @@ import (
 
 var db *gorm.DB
 
+// TODO init a connection pull
 func InitDbConnection(config utils.DB) {
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s?parseTime=%t&loc=%s",

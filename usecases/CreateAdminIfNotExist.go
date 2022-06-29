@@ -1,9 +1,9 @@
 package usecases
 
 import (
-	"ams-back/src/database"
-	"ams-back/src/models"
-	"ams-back/src/repos"
+	database "ams-back/database"
+	models "ams-back/models"
+	repos "ams-back/repos"
 	"crypto/rand"
 	b64 "encoding/base64"
 	"fmt"
@@ -21,7 +21,7 @@ func CreateSuperAdminIfNotExists() {
 		return
 	}
 	superAdmin := models.Admin{Username: "superAdmin"}
-	b := make([]byte, 50)
+	b := make([]byte, 20)
 	_, randErr := rand.Read(b)
 	if randErr != nil {
 		log.Printf("Error In password generation")
@@ -31,5 +31,5 @@ func CreateSuperAdminIfNotExists() {
 	fmt.Printf("SuperAdmin password: %s", string(sEnc))
 	superAdmin.GeneratePasswordHash(string(sEnc))
 	db := database.GetDb()
-	db.Save(superAdmin)
+	db.Save(&superAdmin)
 }

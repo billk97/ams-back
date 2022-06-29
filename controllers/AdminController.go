@@ -1,15 +1,25 @@
 package controllers
 
 import (
-	"ams-back/src/dtos"
-	"ams-back/src/usecases"
-	"ams-back/src/utils"
+	dtos "ams-back/dtos"
+	usecases "ams-back/usecases"
+	utils "ams-back/utils"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
-func AdminLogin(c *gin.Context) {
+var router *gin.Engine
+
+func CreateAdminConntroller(r *gin.Engine) {
+	router = r
+	api := router.Group("api/admin")
+	{
+		api.POST("/login", adminLogin)
+	}
+}
+
+func adminLogin(c *gin.Context) {
 	dto := dtos.CredentialDto{}
 	err := c.BindJSON(&dto)
 	if err != nil {
@@ -26,6 +36,7 @@ func AdminLogin(c *gin.Context) {
 	if loginError != nil {
 		loginError.Enhance(c)
 		c.JSON(401, loginError)
+		return
 	}
-	c.JSON(200, access)
+	c.JSON(200, &access)
 }

@@ -1,15 +1,16 @@
 package repos
 
 import (
-	"ams-back/src/database"
-	"ams-back/src/models"
-	"ams-back/src/utils"
+	database "ams-back/database"
+	models "ams-back/models"
+	utils "ams-back/utils"
 	"fmt"
 )
 
 func SaveEmploy(employee *models.Employee) (*models.Employee, *utils.ApiError) {
 	db := database.GetDb()
-	result := db.Create(&employee)
+	fmt.Printf("%+v", employee)
+	result := db.Create(employee)
 	if result.Error != nil {
 		e := utils.NewApiError(
 			"PERSIST_ENTITY_FAILED",

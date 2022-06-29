@@ -1,10 +1,11 @@
 package repos
 
 import (
-	"ams-back/src/database"
-	"ams-back/src/models"
-	"ams-back/src/utils"
+	database "ams-back/database"
+	models "ams-back/models"
+	utils "ams-back/utils"
 	"fmt"
+	"log"
 )
 
 func CreateAdmin(admin *models.Admin) (*models.Admin, *utils.ApiError) {
@@ -34,6 +35,7 @@ func FindAdminByUsername(username string) (*models.Admin, *utils.ApiError) {
 		return nil, e
 	}
 	if (admin == models.Admin{}) {
+		log.Printf("Entity admin with username: %s not found", username)
 		return nil, nil
 	}
 	return &admin, nil
