@@ -18,7 +18,7 @@ jobs:
       with:
         go-version: 1.18
     - name: Replace config file
-      uses: datamonsters/replace-action
+      uses: ./.github/actions/replace
       with:
         files: 'config.yaml'
         replacements: 'DB_USERNAME=root'
