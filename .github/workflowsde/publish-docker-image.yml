@@ -17,6 +17,11 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: 1.18
+    - name: Replace config file
+      uses: datamonsters/replace-action
+      with:
+        files: 'config.yaml'
+        replacements: 'DB_USERNAME=root'
 
     - name: Docker build
       uses: docker/login-action@v2
