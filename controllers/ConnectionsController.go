@@ -13,6 +13,9 @@ import (
 var host = "http://acapy:8031/connections"
 
 func CreateConnectionsController(r *gin.Engine) {
+	if utils.Config.Aries != "" {
+		host = utils.Config.Aries + "/connections"
+	}
 	router = r
 	api := router.Group("api/connections")
 	{
@@ -23,6 +26,8 @@ func CreateConnectionsController(r *gin.Engine) {
 }
 
 func getConnections(c *gin.Context) {
+	fmt.Println(host)
+	fmt.Println("====")
 	resp, err := http.Get(host)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")

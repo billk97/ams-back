@@ -1,6 +1,0 @@
-db:
-  username: root
-  password: root
-  name: ams_back
-  host: "mysql"
-  port: 3306

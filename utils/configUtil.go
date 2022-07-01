@@ -19,7 +19,8 @@ type DB struct {
 }
 
 type Env struct {
-	DB DB `yaml:"db"`
+	DB    DB `yaml:"db"`
+	Aries string
 }
 
 var Config Env
@@ -44,4 +45,5 @@ func InitEnv() {
 	Config.DB.Host = os.Getenv("DB_HOST")
 	Config.DB.Username = os.Getenv("DB_USERNAME")
 	Config.DB.Password = os.Getenv("DB_PASSWORD")
+	Config.Aries = os.Getenv("ARIES_HOST")
 }
