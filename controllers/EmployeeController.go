@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"ams-back/dtos"
 	models "ams-back/models"
 	repos "ams-back/repos"
 	utils "ams-back/utils"
@@ -10,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateUrlConntroller(r *gin.Engine) {
+func CreateUrlController(r *gin.Engine) {
 	api := r.Group("api/employees")
 	{
 		api.GET("/", getAll)
@@ -41,7 +42,9 @@ func getAll(c *gin.Context) {
 		c.JSON(400, err)
 		return
 	}
-	c.JSON(200, em)
+	c.JSON(200, dtos.Wrapper{
+		Result: em,
+	})
 }
 
 func createEmployee(c *gin.Context) {

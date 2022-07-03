@@ -1,13 +1,14 @@
 package controllers
 
 import (
+	"ams-back/dtos"
+	"ams-back/repos"
 	utils "ams-back/utils"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 var host = "http://acapy:8031/connections"
@@ -19,7 +20,7 @@ func CreateConnectionsController(r *gin.Engine) {
 	router = r
 	api := router.Group("api/connections")
 	{
-		api.POST("/create-invitation", createInvitation)
+		api.POST("/create-invitation/:uuid", createInvitation)
 		api.GET("/", getConnections)
 		api.DELETE("/:id", deleteConnections)
 	}
@@ -47,6 +48,13 @@ func getConnections(c *gin.Context) {
 }
 
 func createInvitation(c *gin.Context) {
+	employeeInvitationId := c.Param("uuid")
+	if employeeInvitationId == "" {
+		apiError := utils.NewApiError("INVITATION_NOT_FOUND", nil, "missing invitation")
+		c.JSON(500, apiError)
+		return
+	}
+	fmt.Printf("employeeInvitation: %s \n", employeeInvitationId)
 	resp, err := http.Post(fmt.Sprintf("%s/create-invitation", host), "application/json", nil)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
@@ -59,10 +67,21 @@ func createInvitation(c *gin.Context) {
 		c.JSON(400, apiError)
 		return
 	}
-	jsonString := string(body)
-	var jsonMap map[string]interface{}
-	json.Unmarshal([]byte(jsonString), &jsonMap)
-	c.JSON(200, jsonMap)
+	dto := dtos.CreateInvitationDTO{}
+	json.Unmarshal(body, &dto)
+	employee, err := repos.FindEmployeeByInvitation(employeeInvitationId)
+	if err != nil && employee == nil {
+		c.JSON(400, err)
+		return
+	}
+	employee.Status = "INVITATION-OPENED"
+	employee.DidConnectionId = dto.ConnectionId
+	_, databaseError := repos.UpdateEmployee(employee)
+	if databaseError != nil {
+		c.JSON(400, databaseError)
+		return
+	}
+	c.JSON(200, &dto)
 }
 
 func deleteConnections(c *gin.Context) {

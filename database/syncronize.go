@@ -12,23 +12,23 @@ func Synchronize(db *gorm.DB) error {
 		{
 			ID: "1",
 			Migrate: func(db *gorm.DB) error {
+				return db.AutoMigrate(models.Permission{})
+			},
+			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("permissions") },
+		},
+		{
+			ID: "2",
+			Migrate: func(db *gorm.DB) error {
 				return db.AutoMigrate(models.Employee{})
 			},
 			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("employees") },
 		},
 		{
-			ID: "2",
+			ID: "3",
 			Migrate: func(db *gorm.DB) error {
 				return db.AutoMigrate(models.Admin{})
 			},
 			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("admins") },
-		},
-		{
-			ID: "3",
-			Migrate: func(db *gorm.DB) error {
-				return db.AutoMigrate(models.Permission{})
-			},
-			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("permissions") },
 		},
 		{
 			ID: "4",

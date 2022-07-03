@@ -6,6 +6,5 @@ import (
 
 type Permission struct {
 	gorm.Model
-	Alias  string `json:"alias"`
-	Action Action `json:"action"`
+	Alias string `json:"alias"`
 }

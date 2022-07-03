@@ -26,7 +26,7 @@ func main() {
 	usecases.CreateSuperAdminIfNotExists()
 
 	r := gin.Default()
-	controllers.CreateUrlConntroller(r)
+	controllers.CreateUrlController(r)
 	controllers.CreateAdminConntroller(r)
 	controllers.CreateResourceConntroller(r)
 	controllers.CreatePermissionController(r)
