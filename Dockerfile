@@ -5,5 +5,6 @@ COPY go.sum ./
 COPY .env ./
 RUN go mod download
 COPY . ./
+RUN ls -la
 RUN go build -o ams-back
 CMD [ "./ams-back" ]
