@@ -23,6 +23,7 @@ func InitDbConnection(config utils.DB) {
 		config.Name,
 		true,
 		"Local")
+	fmt.Printf(dsn)
 	dbc, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
