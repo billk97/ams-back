@@ -5,11 +5,13 @@ import (
 	models "ams-back/models"
 	utils "ams-back/utils"
 	"fmt"
+	"github.com/google/uuid"
 )
 
 func SaveEmploy(employee *models.Employee) (*models.Employee, *utils.ApiError) {
+
 	db := database.GetDb()
-	fmt.Printf("%+v", employee)
+	employee.Invitation = uuid.New().String()
 	result := db.Create(employee)
 	if result.Error != nil {
 		e := utils.NewApiError(
@@ -45,6 +47,22 @@ func FindEmployeeById(id int) (*models.Employee, *utils.ApiError) {
 			"NOT_FOUND",
 			result.Error,
 			fmt.Sprintf("Could't find employee withId: %d", id),
+		)
+		return nil, e
+	}
+	return &employee, nil
+}
+
+func FindEmployeeByInvitation(invitation string) (*models.Employee, *utils.ApiError) {
+	db := database.GetDb()
+	employee := models.Employee{}
+	result := db.Where("invitation = ?", invitation).First(&employee)
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		e := utils.NewApiError(
+			"NOT_FOUND",
+			result.Error,
+			fmt.Sprintf("Could't find employee with invitaion: %s", invitation),
 		)
 		return nil, e
 	}

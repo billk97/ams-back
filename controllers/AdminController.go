@@ -9,11 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var router *gin.Engine
-
-func CreateAdminConntroller(r *gin.Engine) {
-	router = r
-	api := router.Group("api/admin")
+func CreateAdminController(r *gin.Engine) {
+	api := r.Group("api/admin")
 	{
 		api.POST("/login", adminLogin)
 	}

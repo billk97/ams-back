@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateResourceConntroller(r *gin.Engine) {
+func CreateResourceController(r *gin.Engine) {
 	api := r.Group("api/resource")
 	{
 		api.GET("/:id", getResourceById)
