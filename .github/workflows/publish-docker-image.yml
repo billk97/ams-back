@@ -21,9 +21,9 @@ jobs:
         echo DB_HOST="mysql" >> .env
         echo DB_NAME="ams_back" >> .env
         echo DB_PORT="3306" >> .env
-        cat .env
         echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
         echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
+        cat .env
 
     - name: Docker build
       uses: docker/login-action@v2
