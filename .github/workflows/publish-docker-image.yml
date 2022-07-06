@@ -24,7 +24,7 @@ jobs:
         echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
         echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
         cat .env
-        ls
+        ls -la
         pwd
 
     - name: Docker build
