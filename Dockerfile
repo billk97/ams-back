@@ -3,6 +3,7 @@ WORKDIR /app
 COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
-COPY . ./
+COPY * ./
 RUN go build -o ams-back
+RUN ls -la
 CMD [ "./ams-back" ]
