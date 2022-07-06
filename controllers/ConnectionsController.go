@@ -11,14 +11,14 @@ import (
 	"net/http"
 )
 
-var host = "http://acapy:8031/connections"
+var connectionUrl = ""
 
 func CreateConnectionsController(r *gin.Engine) {
-	if utils.Config.Aries != "" {
-		host = utils.Config.Aries + "/connections"
+	if utils.Config.Aries != "" && AriesHost == "" {
+		AriesHost = utils.Config.Aries
 	}
-	router = r
-	api := router.Group("api/connections")
+	connectionUrl = AriesHost + "/connections"
+	api := r.Group("api/connections")
 	{
 		api.POST("/create-invitation/:uuid", createInvitation)
 		api.GET("/", getConnections)
@@ -27,9 +27,9 @@ func CreateConnectionsController(r *gin.Engine) {
 }
 
 func getConnections(c *gin.Context) {
-	fmt.Println(host)
+	fmt.Println(connectionUrl)
 	fmt.Println("====")
-	resp, err := http.Get(host)
+	resp, err := http.Get(connectionUrl)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
 		c.JSON(500, apiError)
@@ -55,7 +55,7 @@ func createInvitation(c *gin.Context) {
 		return
 	}
 	fmt.Printf("employeeInvitation: %s \n", employeeInvitationId)
-	resp, err := http.Post(fmt.Sprintf("%s/create-invitation", host), "application/json", nil)
+	resp, err := http.Post(fmt.Sprintf("%s/create-invitation", connectionUrl), "application/json", nil)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
 		c.JSON(500, apiError)
@@ -85,7 +85,7 @@ func createInvitation(c *gin.Context) {
 }
 
 func deleteConnections(c *gin.Context) {
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/%s", host, c.Param("id")), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/%s", connectionUrl, c.Param("id")), nil)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
 		c.JSON(500, apiError)

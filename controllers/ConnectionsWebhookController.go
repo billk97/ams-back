@@ -12,10 +12,12 @@ import (
 )
 
 func CreateWebhookController(r *gin.Engine) {
-	router = r
-	api := router.Group("api/webhook/topic/connections")
+	if utils.Config.Aries != "" && AriesHost == "" {
+		AriesHost = utils.Config.Aries
+	}
+	api := r.Group("api/webhook/topic/connections")
 	{
-		api.POST("/", conectionWebhook)
+		api.POST("/", connectionWebhook)
 	}
 }
 
@@ -28,7 +30,7 @@ func webhook(c *gin.Context) {
 	fmt.Println(jsonData)
 }
 
-func conectionWebhook(c *gin.Context) {
+func connectionWebhook(c *gin.Context) {
 	dto := dtos.ConnectionDTO{}
 	err := c.BindJSON(&dto)
 	if err != nil {
@@ -48,7 +50,7 @@ func conectionWebhook(c *gin.Context) {
 }
 
 func requestReceived(dto *dtos.ConnectionDTO) *utils.ApiError {
-	resp, err := http.Post(fmt.Sprintf("%s/%s/accept-request", host, dto.ConnectionId), "application/json", nil)
+	resp, err := http.Post(fmt.Sprintf("%s/%s/accept-request", connectionUrl, dto.ConnectionId), "application/json", nil)
 	if err != nil {
 		return utils.NewApiError("REQUEST_FAILED", err, "details")
 	}
