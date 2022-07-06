@@ -39,5 +39,6 @@ jobs:
     - name: Docker build and push 
       uses: docker/build-push-action@v3
       with:
+        context: .
         push: true
         tags: vskgr/controller:latest
