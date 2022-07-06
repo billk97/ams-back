@@ -23,7 +23,7 @@ jobs:
         echo DB_PORT="3306" >> env
         echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> env
         echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> env
-        cat .env
+        cat env
         ls -la
         pwd
 
