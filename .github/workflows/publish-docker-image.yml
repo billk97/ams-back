@@ -17,17 +17,15 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: 1.18
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_DB_HOST: "mysql"
-        envkey_DB_NAME: "ams_back"
-        envkey_DB_PORT: 3306
-        envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        directory: /
-        file_name: .env
-        fail_on_empty: false
+    - name: Create .env file
+      run: |
+        touch .env
+        echo DB_HOST = "mysql" >> .env
+        echo DB_NAME = "ams_back" >> .env
+        echo DB_PORT = "3306" >> .env
+        cat .env
+        echo DB_PASSWORD = ${{ secrets.DB_PASSWORD }} >> .env
+        echo DB_USERNAME: ${{ secrets.DB_USERNAME }} >> .env
 
     - name: Docker build
       uses: docker/login-action@v2
