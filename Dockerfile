@@ -2,6 +2,7 @@ FROM golang:1.18-alpine
 WORKDIR /app
 COPY go.mod ./
 COPY go.sum ./
+RUN ls -la
 COPY env ./.env
 RUN go mod download
 COPY . ./
