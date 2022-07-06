@@ -17,12 +17,12 @@ jobs:
         go-version: 1.18
     - name: Create .env file
       run: |
-        touch .env
-        echo DB_HOST="mysql" >> .env
-        echo DB_NAME="ams_back" >> .env
-        echo DB_PORT="3306" >> .env
-        echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-        echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
+        touch env
+        echo DB_HOST="mysql" >> env
+        echo DB_NAME="ams_back" >> env
+        echo DB_PORT="3306" >> env
+        echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> env
+        echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> env
         cat .env
         ls -la
         pwd
