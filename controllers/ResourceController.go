@@ -35,8 +35,14 @@ func createResource(c *gin.Context) {
 	}
 	databaseError := repos.SaveResource(&resource)
 	if databaseError != nil {
-		databaseError.Enhance(c)
-		c.JSON(400, databaseError)
+		apiErr := utils.NewApiError(
+			"PERSIST_ENTITY_FAILED",
+			databaseError,
+			fmt.Sprintf("Could't persist entity of type Resource"),
+		)
+
+		apiErr.Enhance(c)
+		c.JSON(400, apiErr)
 		return
 	}
 	c.JSON(200, &resource)
@@ -69,8 +75,13 @@ func updateResource(c *gin.Context) {
 	resource.ID = uint(id)
 	databaseError := repos.UpdateResource(&resource)
 	if databaseError != nil {
-		databaseError.Enhance(c)
-		c.JSON(400, databaseError)
+		apiError := utils.NewApiError(
+			"PERSIST_ENTITY_FAILED",
+			databaseError,
+			fmt.Sprintf("Could't persist entity of type Resource"),
+		)
+		apiError.Enhance(c)
+		c.JSON(400, apiError)
 		return
 	}
 	c.JSON(200, &resource)
@@ -90,8 +101,13 @@ func getResourceById(c *gin.Context) {
 	}
 	resource, databaseError := repos.FindOneResourceById(id)
 	if databaseError != nil {
-		databaseError.Enhance(c)
-		c.JSON(400, databaseError)
+		apiError := utils.NewApiError(
+			"QUERY_EXECUTION_FAILED",
+			databaseError,
+			fmt.Sprintf("Could not execute query"),
+		)
+		apiError.Enhance(c)
+		c.JSON(400, apiError)
 		return
 	}
 	if resource == nil {
@@ -125,8 +141,14 @@ func getResources(c *gin.Context) {
 	}
 	resources, databaseError := repos.FindResource(page)
 	if databaseError != nil {
-		databaseError.Enhance(c)
-		c.JSON(400, databaseError)
+		apiError := utils.NewApiError(
+			"QUERY_EXECUTION_FAILED",
+			databaseError,
+			fmt.Sprintf("Could not execute query"),
+		)
+
+		apiError.Enhance(c)
+		c.JSON(400, apiError)
 		return
 	}
 	c.JSON(200, resources)
