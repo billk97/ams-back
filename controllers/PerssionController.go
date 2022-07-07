@@ -33,8 +33,13 @@ func addPermission(c *gin.Context) {
 	}
 	databaseError := repos.CreatePermission(&permission)
 	if databaseError != nil {
-		databaseError.Enhance(c)
-		c.JSON(400, databaseError)
+		apiError := utils.NewApiError(
+			"PERSIST_ENTITY_FAILED",
+			databaseError,
+			fmt.Sprintf("Could't persist entity of type permision"),
+		)
+		apiError.Enhance(c)
+		c.JSON(400, apiError)
 		return
 	}
 	c.JSON(200, &permission)
@@ -58,8 +63,13 @@ func getPermissions(c *gin.Context) {
 	}
 	permissions, databaseError := repos.FindPermissions(page)
 	if databaseError != nil {
-		databaseError.Enhance(c)
-		c.JSON(400, databaseError)
+		apiError := utils.NewApiError(
+			"QUERY_EXECUTION_FAILED",
+			databaseError,
+			fmt.Sprintf("Could not execute query"),
+		)
+		apiError.Enhance(c)
+		c.JSON(400, apiError)
 		return
 	}
 	c.JSON(200, &permissions)

@@ -1,41 +1,28 @@
 package usecases
 
 import (
-	dtos "ams-back/dtos"
-	repos "ams-back/repos"
-	utils "ams-back/utils"
+	"ams-back/dtos"
+	"ams-back/repos"
+	"errors"
 	"fmt"
 
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func Login(dto dtos.CredentialDto) (*dtos.AccessDto, *utils.ApiError) {
+func Login(dto dtos.CredentialDto) (*dtos.AccessDto, error) {
 	user, err := repos.FindAdminByUsername(dto.Username)
 	if err != nil || user == nil {
-		return nil, utils.NewApiError(
-			"INVALED_CREDENTIALS",
-			nil,
-			fmt.Sprintf("Credentials are invalid!"),
-		)
+		return nil, err
 	}
 
-	fmt.Println("here")
 	if !user.CheckPasswordHash(dto.Password) {
-		return nil, utils.NewApiError(
-			"INVALED_CREDENTIALS",
-			nil,
-			fmt.Sprintf("Credentials are invalid!"),
-		)
+		return nil, errors.New(fmt.Sprintf("Credentials are invalid!"))
 	}
 	access := dtos.AccessDto{}
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{})
 	tokenString, singErr := jwtToken.SignedString([]byte("secret"))
 	if singErr != nil {
-		return nil, utils.NewApiError(
-			"SIGN_FAILED",
-			singErr,
-			fmt.Sprintf("Failed to sing jwt"),
-		)
+		return nil, singErr
 	}
 	access.Token = tokenString
 	return &access, nil

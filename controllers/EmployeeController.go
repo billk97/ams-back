@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"ams-back/dtos"
-	models "ams-back/models"
-	repos "ams-back/repos"
-	utils "ams-back/utils"
+	"ams-back/models"
+	"ams-back/repos"
+	"ams-back/utils"
 	"fmt"
 	"strconv"
 
@@ -29,7 +29,14 @@ func getById(c *gin.Context) {
 	}
 	result, err := repos.FindEmployeeById(id)
 	if result == nil && err != nil {
-		c.JSON(400, err)
+		apiErr := utils.NewApiError(
+			"NOT_FOUND",
+			err,
+			fmt.Sprintf("Could't find employee withId: %d", id),
+		)
+
+		apiErr.Enhance(c)
+		c.JSON(400, apiErr)
 		return
 	}
 	c.JSON(200, result)
@@ -39,7 +46,13 @@ func getAll(c *gin.Context) {
 	em, err := repos.FindEmployees(2)
 
 	if em == nil && err != nil {
-		c.JSON(400, err)
+		apiErr := utils.NewApiError(
+			"NOT_FOUND",
+			err,
+			fmt.Sprintf("Could't find employees: "),
+		)
+		apiErr.Enhance(c)
+		c.JSON(400, apiErr)
 		return
 	}
 	c.JSON(200, dtos.Wrapper{
@@ -62,10 +75,15 @@ func createEmployee(c *gin.Context) {
 	}
 	e, err := repos.SaveEmploy(&emp)
 	if e == nil && err != nil {
-		c.JSON(400, err)
+		apiError := utils.NewApiError(
+			"PERSIST_ENTITY_FAILED",
+			err,
+			fmt.Sprintf("Could't persist entity of type employee"),
+		)
+		apiError.Enhance(c)
+		c.JSON(400, apiError)
 		return
 	}
-	fmt.Println(e)
 	c.JSON(200, emp)
 }
 
@@ -90,7 +108,13 @@ func updateEmployeeData(c *gin.Context) {
 	emp.ID = uint(id)
 	e, err := repos.UpdateEmployee(&emp)
 	if e == nil && err != nil {
-		c.JSON(400, err)
+		apiErr := utils.NewApiError(
+			"PERSIST_ENTITY_FAILED",
+			err,
+			fmt.Sprintf("Could't persist entity of type employee"),
+		)
+		apiErr.Enhance(c)
+		c.JSON(400, apiErr)
 		return
 	}
 	fmt.Println(e)
