@@ -38,7 +38,7 @@ func UpdateResource(resource *models.Resource) *utils.ApiError {
 func FindOneResourceById(id int) (*models.Resource, *utils.ApiError) {
 	db := database.GetDb()
 	resource := &models.Resource{}
-	result := db.Where("id = ?", id).First(&resource)
+	result := db.Preload("Permission").Where("id = ?", id).First(&resource)
 	if result.Error != nil {
 		e := utils.NewApiError(
 			"QUERY_EXECUTION_FAILED",
@@ -60,7 +60,7 @@ func FindResource(page int) (*[]models.Resource, *utils.ApiError) {
 	if page > 0 {
 		offset = page - 1
 	}
-	result := db.Offset(offset).Limit(20).Find(&resources)
+	result := db.Preload("Permission").Offset(offset).Limit(20).Find(&resources)
 	if result.Error != nil {
 		e := utils.NewApiError(
 			"QUERY_EXECUTION_FAILED",
