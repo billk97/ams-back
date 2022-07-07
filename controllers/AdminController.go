@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	dtos "ams-back/dtos"
-	usecases "ams-back/usecases"
-	utils "ams-back/utils"
+	"ams-back/dtos"
+	"ams-back/usecases"
+	"ams-back/utils"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -31,8 +31,13 @@ func adminLogin(c *gin.Context) {
 	}
 	access, loginError := usecases.Login(dto)
 	if loginError != nil {
-		loginError.Enhance(c)
-		c.JSON(401, loginError)
+		apiErr := utils.NewApiError(
+			"INVALID_CREDENTIALS",
+			loginError,
+			fmt.Sprintf("Credentials are invalid!"),
+		)
+		apiErr.Enhance(c)
+		c.JSON(401, apiErr)
 		return
 	}
 	c.JSON(200, &access)

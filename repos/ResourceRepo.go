@@ -1,51 +1,34 @@
 package repos
 
 import (
-	database "ams-back/database"
-	models "ams-back/models"
-	utils "ams-back/utils"
-	"fmt"
+	"ams-back/database"
+	"ams-back/models"
 )
 
-func SaveResource(resource *models.Resource) *utils.ApiError {
+func SaveResource(resource *models.Resource) error {
 	db := database.GetDb()
 	result := db.Create(resource)
 	if result.Error != nil {
-		e := utils.NewApiError(
-			"PERSIST_ENTITY_FAILED",
-			result.Error,
-			fmt.Sprintf("Could't persist entity of type Resource"),
-		)
-		return e
+		return result.Error
 	}
 	return nil
 }
 
-func UpdateResource(resource *models.Resource) *utils.ApiError {
+func UpdateResource(resource *models.Resource) error {
 	db := database.GetDb()
 	result := db.Save(&resource)
 	if result.Error != nil {
-		e := utils.NewApiError(
-			"PERSIST_ENTITY_FAILED",
-			result.Error,
-			fmt.Sprintf("Could't persist entity of type Resource"),
-		)
-		return e
+		return result.Error
 	}
 	return nil
 }
 
-func FindOneResourceById(id int) (*models.Resource, *utils.ApiError) {
+func FindOneResourceById(id int) (*models.Resource, error) {
 	db := database.GetDb()
 	resource := &models.Resource{}
 	result := db.Where("id = ?", id).First(&resource)
 	if result.Error != nil {
-		e := utils.NewApiError(
-			"QUERY_EXECUTION_FAILED",
-			result.Error,
-			fmt.Sprintf("Could not execute query"),
-		)
-		return nil, e
+		return nil, result.Error
 	}
 	if (resource == &models.Resource{}) {
 		return nil, nil
@@ -53,7 +36,7 @@ func FindOneResourceById(id int) (*models.Resource, *utils.ApiError) {
 	return resource, nil
 }
 
-func FindResource(page int) (*[]models.Resource, *utils.ApiError) {
+func FindResource(page int) (*[]models.Resource, error) {
 	offset := 0
 	db := database.GetDb()
 	resources := []models.Resource{}
@@ -62,12 +45,7 @@ func FindResource(page int) (*[]models.Resource, *utils.ApiError) {
 	}
 	result := db.Offset(offset).Limit(20).Find(&resources)
 	if result.Error != nil {
-		e := utils.NewApiError(
-			"QUERY_EXECUTION_FAILED",
-			result.Error,
-			fmt.Sprintf("Could not execute query"),
-		)
-		return nil, e
+		return nil, result.Error
 	}
 	return &resources, nil
 }

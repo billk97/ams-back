@@ -27,8 +27,6 @@ func CreateConnectionsController(r *gin.Engine) {
 }
 
 func getConnections(c *gin.Context) {
-	fmt.Println(connectionUrl)
-	fmt.Println("====")
 	resp, err := http.Get(connectionUrl)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
@@ -71,7 +69,13 @@ func createInvitation(c *gin.Context) {
 	json.Unmarshal(body, &dto)
 	employee, err := repos.FindEmployeeByInvitation(employeeInvitationId)
 	if err != nil && employee == nil {
-		c.JSON(400, err)
+		apiErr := utils.NewApiError(
+			"NOT_FOUND",
+			err,
+			fmt.Sprintf("Could't find employee with invitaion: %s", employeeInvitationId),
+		)
+		apiErr.Enhance(c)
+		c.JSON(400, apiErr)
 		return
 	}
 	employee.Status = "INVITATION-OPENED"
