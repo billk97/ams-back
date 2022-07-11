@@ -17,7 +17,7 @@ func CreateWebhookController(r *gin.Engine) {
 	}
 	api := r.Group("api/webhook/topic/connections")
 	{
-		api.POST("/", connectionWebhook)
+		api.POST("", connectionWebhook)
 	}
 }
 

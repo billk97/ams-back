@@ -18,8 +18,8 @@ func CreateIssueCredentialController(r *gin.Engine) {
 	issueCredentialUrl = AriesHost + "/issue-credential-2.0"
 	api := r.Group("api/issue-credentials")
 	{
-		api.POST("/", handleIssueCredential)
-		api.GET("/", getCredentialsRecords)
+		api.POST("", handleIssueCredential)
+		api.GET("", getCredentialsRecords)
 		api.GET("/:id", getCredentialsRecordsByConnectionId)
 	}
 }

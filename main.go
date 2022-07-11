@@ -18,6 +18,8 @@ func main() {
 	usecases.CreateSuperAdminIfNotExists()
 
 	r := gin.Default()
+	r.Use(middlewares.JSONMiddleware())
+	r.Use(middlewares.CORSMiddleware())
 	controllers.CreateUrlController(r)
 	controllers.CreateAdminController(r)
 	controllers.CreateResourceController(r)
@@ -27,7 +29,6 @@ func main() {
 	controllers.CreateIssueCredentialsWebhookController(r)
 	controllers.CreateContextController(r)
 	controllers.CreateIssueCredentialController(r)
-	r.Use(middlewares.JSONMiddleware())
-	r.Use(middlewares.CORSMiddleware())
+
 	r.Run(":5000")
 }

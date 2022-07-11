@@ -21,7 +21,7 @@ func CreateConnectionsController(r *gin.Engine) {
 	api := r.Group("api/connections")
 	{
 		api.POST("/create-invitation/:uuid", createInvitation)
-		api.GET("/", getConnections)
+		api.GET("", getConnections)
 		api.DELETE("/:id", deleteConnections)
 	}
 }

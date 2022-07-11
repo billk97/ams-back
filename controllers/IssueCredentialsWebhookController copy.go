@@ -11,7 +11,7 @@ import (
 func CreateIssueCredentialsWebhookController(r *gin.Engine) {
 	api := r.Group("api/webhook/topic/issue_credential_v2_0")
 	{
-		api.POST("/", issue_credential)
+		api.POST("", issue_credential)
 	}
 }
 

@@ -14,7 +14,7 @@ import (
 func CreateUrlController(r *gin.Engine) {
 	api := r.Group("api/employees")
 	{
-		api.GET("/", getAll)
+		api.GET("", getAll)
 		api.GET("/:id", getById)
 		api.POST("/", createEmployee)
 		api.PUT("/:id", updateEmployeeData)

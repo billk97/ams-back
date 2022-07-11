@@ -13,8 +13,8 @@ import (
 func CreatePermissionController(r *gin.Engine) {
 	api := r.Group("api/permissions")
 	{
-		api.GET("/", getPermissions)
-		api.POST("/", addPermission)
+		api.GET("", getPermissions)
+		api.POST("", addPermission)
 	}
 }
 
