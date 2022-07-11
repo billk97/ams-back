@@ -1,15 +1,16 @@
 package main
 
 import (
-	controllers "ams-back/controllers"
-	database "ams-back/database"
+	"ams-back/controllers"
+	"ams-back/database"
 	"ams-back/middlewares"
-	usecases "ams-back/usecases"
-	utils "ams-back/utils"
+	"ams-back/usecases"
+	"ams-back/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	//utils.SendEmail()
 	var config utils.Env
 	utils.InitEnv()
 	config = utils.Config
