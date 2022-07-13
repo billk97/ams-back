@@ -9,7 +9,7 @@ func CreateContextController(r *gin.Engine) {
 	api := r.Group("contexts/rooms")
 	{
 		api.GET("/v1", getContext)
-		api.GET("/", getContext)
+		api.GET("", getContext)
 	}
 }
 

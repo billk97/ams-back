@@ -18,8 +18,9 @@ func CreateIssueCredentialController(r *gin.Engine) {
 	issueCredentialUrl = AriesHost + "/issue-credential-2.0"
 	api := r.Group("api/issue-credentials")
 	{
-		api.POST("/", handleIssueCredential)
-		api.GET("/", getCredentialsRecords)
+		api.POST("", handleIssueCredential)
+		api.GET("", getCredentialsRecords)
+		api.GET("/:id", getCredentialsRecordsByConnectionId)
 	}
 }
 
@@ -36,7 +37,7 @@ func handleIssueCredential(c *gin.Context) {
 		c.JSON(400, &apiError)
 		return
 	}
-	// make request to agent
+	// todo make request to agent to issue credentials
 }
 
 func getCredentialsRecords(c *gin.Context) {
@@ -59,11 +60,7 @@ func getCredentialsRecords(c *gin.Context) {
 }
 
 func getCredentialsRecordsByConnectionId(c *gin.Context) {
-	//id, err := strconv.Atoi(c.Param("id"))
-	//if err != nil {
-	//	c.JSON(400, err)
-	//	return
-	//}
+	id := c.Param("id")
 	resp, err := http.Get(issueCredentialUrl + "/records")
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
@@ -77,8 +74,18 @@ func getCredentialsRecordsByConnectionId(c *gin.Context) {
 		return
 	}
 	jsonString := string(body)
-	// filter only those with id
-	var jsonMap map[string]interface{}
-	json.Unmarshal([]byte(jsonString), &jsonMap)
-	c.JSON(200, jsonMap)
+	dto := dtos.CredentialExchangeRecordDTO{}
+	json.Unmarshal([]byte(jsonString), &dto)
+	credentialExchanges := dto.Results
+	var credentialExchangesForId []dtos.CredentialExchangeRecord
+	for i := range credentialExchanges {
+		if credentialExchanges[i].CredExRecord.ConnectionId != id {
+			continue
+		}
+		credentialExchangesForId = append(credentialExchangesForId, credentialExchanges[i])
+	}
+	result := dtos.CredentialExchangeRecordDTO{
+		credentialExchangesForId,
+	}
+	c.JSON(200, &result)
 }

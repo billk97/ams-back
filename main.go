@@ -1,15 +1,16 @@
 package main
 
 import (
-	controllers "ams-back/controllers"
-	database "ams-back/database"
+	"ams-back/controllers"
+	"ams-back/database"
 	"ams-back/middlewares"
-	usecases "ams-back/usecases"
-	utils "ams-back/utils"
+	"ams-back/usecases"
+	"ams-back/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	// TODO get the public did?
 	var config utils.Env
 	utils.InitEnv()
 	config = utils.Config
@@ -18,6 +19,8 @@ func main() {
 	usecases.CreateSuperAdminIfNotExists()
 
 	r := gin.Default()
+	r.Use(middlewares.JSONMiddleware())
+	r.Use(middlewares.CORSMiddleware())
 	controllers.CreateUrlController(r)
 	controllers.CreateAdminController(r)
 	controllers.CreateResourceController(r)
@@ -27,7 +30,6 @@ func main() {
 	controllers.CreateIssueCredentialsWebhookController(r)
 	controllers.CreateContextController(r)
 	controllers.CreateIssueCredentialController(r)
-	r.Use(middlewares.JSONMiddleware())
-	r.Use(middlewares.CORSMiddleware())
+
 	r.Run(":5000")
 }

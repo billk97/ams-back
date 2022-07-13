@@ -14,8 +14,8 @@ func CreateResourceController(r *gin.Engine) {
 	api := r.Group("api/resource")
 	{
 		api.GET("/:id", getResourceById)
-		api.GET("/", getResources)
-		api.POST("/", createResource)
+		api.GET("", getResources)
+		api.POST("", createResource)
 		api.PUT("/:id", updateResource)
 	}
 }

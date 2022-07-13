@@ -13,5 +13,7 @@ type Employee struct {
 	Invitation      string       `json:"invitation" gorm:"size:255;UNIQUE_INDEX:invitation_index;"`
 	DidConnectionId string       `json:"didConnectionId" gorm:"size:255;"`
 	Status          string       `json:"status" gorm:"size:255;"`
-	Permission      []Permission `json:"permission" gorm:"many2many:employee_permissions;"`
+	Permission      []Permission `json:"permissions" gorm:"many2many:employee_permissions;"`
+	// TODO add a state if a credential has been issued?
+	// TODO add the did?
 }
