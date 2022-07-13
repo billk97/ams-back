@@ -74,7 +74,6 @@ func getCredentialsRecordsByConnectionId(c *gin.Context) {
 		return
 	}
 	jsonString := string(body)
-	// filter only those with id
 	dto := dtos.CredentialExchangeRecordDTO{}
 	json.Unmarshal([]byte(jsonString), &dto)
 	credentialExchanges := dto.Results
