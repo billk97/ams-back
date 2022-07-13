@@ -37,7 +37,7 @@ func handleIssueCredential(c *gin.Context) {
 		c.JSON(400, &apiError)
 		return
 	}
-	// make request to agent
+	// todo make request to agent to issue credentials
 }
 
 func getCredentialsRecords(c *gin.Context) {

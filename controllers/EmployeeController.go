@@ -16,7 +16,7 @@ func CreateUrlController(r *gin.Engine) {
 	{
 		api.GET("", getAll)
 		api.GET("/:id", getById)
-		api.POST("/", createEmployee)
+		api.POST("", createEmployee)
 		api.PUT("/:id", updateEmployeeData)
 	}
 }
@@ -43,7 +43,7 @@ func getById(c *gin.Context) {
 }
 
 func getAll(c *gin.Context) {
-	em, err := repos.FindEmployees(2)
+	em, err := repos.FindEmployees(1)
 
 	if em == nil && err != nil {
 		apiErr := utils.NewApiError(

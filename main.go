@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	//utils.SendEmail()
+	// TODO get the public did?
 	var config utils.Env
 	utils.InitEnv()
 	config = utils.Config
