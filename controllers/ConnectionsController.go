@@ -17,7 +17,6 @@ func CreateConnectionsController(r *gin.Engine) {
 	if utils.Config.Aries != "" && AriesHost == "" {
 		AriesHost = utils.Config.Aries
 	}
-	// todo investigate bug
 	connectionUrl = utils.Config.Aries + "/connections"
 	api := r.Group("api/connections")
 	{
