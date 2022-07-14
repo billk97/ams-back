@@ -23,6 +23,7 @@ jobs:
         echo DB_PORT="3306" >> env
         echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> env
         echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> env
+        echo ARIES_HOST="http://acapy:8031" >> env
 
     - name: Docker Login
       uses: docker/login-action@v2
