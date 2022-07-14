@@ -29,6 +29,7 @@ func CreateConnectionsController(r *gin.Engine) {
 
 func getConnections(c *gin.Context) {
 	resp, err := http.Get(connectionUrl)
+	fmt.Println(connectionUrl)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
 		c.JSON(500, apiError)
