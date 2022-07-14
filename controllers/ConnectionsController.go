@@ -17,7 +17,8 @@ func CreateConnectionsController(r *gin.Engine) {
 	if utils.Config.Aries != "" && AriesHost == "" {
 		AriesHost = utils.Config.Aries
 	}
-	connectionUrl = AriesHost + "/connections"
+	// todo investigate bug
+	connectionUrl = utils.Config.Aries + "/connections"
 	api := r.Group("api/connections")
 	{
 		api.POST("/create-invitation/:uuid", createInvitation)
