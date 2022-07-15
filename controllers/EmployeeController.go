@@ -19,12 +19,17 @@ func CreateUrlController(r *gin.Engine) {
 		api.GET("/:id", getById)
 		api.POST("", createEmployee)
 		api.PUT("/:id", updateEmployeeData)
-		api.GET("/resources", fetchEmployeeResources)
+		api.GET("/:id/resources", fetchEmployeeResources)
 	}
 }
 
 func fetchEmployeeResources(c *gin.Context) {
-	resources, err := repos.GetEmployeeResources(6)
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, err)
+		return
+	}
+	resources, err := repos.GetEmployeeResources(id)
 	if err != nil {
 		c.JSON(400, err)
 		return

@@ -14,8 +14,6 @@ func SaveEmploy(employee *models.Employee) (uint, error) {
 	return employee.ID, nil
 }
 
-//todo add repository call get all rooms a user can access
-
 func GetEmployeeResources(id int) (*[]models.Resource, error) {
 	var resources *[]models.Resource
 	db := database.GetDb()
@@ -32,6 +30,7 @@ func GetEmployeeResources(id int) (*[]models.Resource, error) {
 
 func UpdateEmployee(employee *models.Employee) (*models.Employee, error) {
 	db := database.GetDb()
+	db.Model(employee).Association("Permission").Replace(employee.Permission)
 	result := db.Save(employee)
 	if result.Error != nil {
 		return nil, result.Error
