@@ -39,7 +39,11 @@ func populateCredential(employee *models.Employee) (*dtos.IssueCredentialDTO, er
 				Issuer:       "did:sov:GHZXFFQdytHVVXywsQaukB", // todo get from ledger
 				IssuanceDate: time.Now().UTC(),
 				CredentialSubject: dtos.CredentialSubject{
-					Name: "skata",
+					Id:         "did:sov:FyEkpqHm8NBGmWqdf4DPbn", // fetch the DID
+					GivenName:  employee.FirstName,
+					FamilyName: employee.LastName,
+					JobTitle:   employee.JobTitle,
+					Email:      employee.Email,
 				},
 				Rooms: permissions,
 			},
