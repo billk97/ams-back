@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ams-back/dtos"
+	"ams-back/usecases"
 	"ams-back/utils"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
@@ -25,18 +26,17 @@ func CreateIssueCredentialController(r *gin.Engine) {
 }
 
 func handleIssueCredential(c *gin.Context) {
-	dto := dtos.IssueCredentialDTO{}
-	serializationError := c.Bind(&dto)
-	if serializationError != nil {
-		apiError := utils.NewApiError(
-			"INVALID_INPUT",
-			serializationError,
-			"Error serializing Struc of type IssueCredentialsDto",
-		)
+	//dto := dtos.IssueCredentialDTO{}
+	//serializationError := c.Bind(&dto)
+	// TODO create credential
+	responseDTO, err := usecases.CreateAndSendIssueCredentialRequest(6)
+	if err != nil {
+		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
 		apiError.Enhance(c)
-		c.JSON(400, &apiError)
+		c.JSON(400, apiError)
 		return
 	}
+	c.JSON(200, responseDTO)
 	// todo make request to agent to issue credentials
 }
 
