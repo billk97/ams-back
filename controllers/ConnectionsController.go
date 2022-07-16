@@ -3,6 +3,7 @@ package controllers
 import (
 	"ams-back/dtos"
 	"ams-back/repos"
+	"ams-back/usecases"
 	utils "ams-back/utils"
 	"encoding/json"
 	"fmt"
@@ -22,6 +23,7 @@ func CreateConnectionsController(r *gin.Engine) {
 	{
 		api.POST("/create-invitation/:uuid", createInvitation)
 		api.GET("", getConnections)
+		api.GET(":id", getConnectionById)
 		api.DELETE("/:id", deleteConnections)
 	}
 }
@@ -44,6 +46,17 @@ func getConnections(c *gin.Context) {
 	var jsonMap map[string]interface{}
 	json.Unmarshal([]byte(jsonString), &jsonMap)
 	c.JSON(200, jsonMap)
+}
+
+func getConnectionById(c *gin.Context) {
+	id := c.Param("id")
+	connection, err := usecases.GetConnectionDetails(id)
+	if err != nil {
+		apiError := utils.NewApiError("DESIRIALIAZATION_ERROR", err, "details")
+		c.JSON(400, apiError)
+		return
+	}
+	c.JSON(200, connection)
 }
 
 func createInvitation(c *gin.Context) {
