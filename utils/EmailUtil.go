@@ -7,13 +7,11 @@ import (
 )
 
 func SendEmail(invitation string, to string) error {
-	from := "no-replay@alphacorp.vsk.gr"
+	from := Config.EmailVars.From
+	fmt.Println(Config.EmailVars)
+	// Todo print info log
 	fmt.Println("sending an email to: " + to)
 	fmt.Println("invitation: ")
-
-	// todo move credentials to .env
-	password := "BEc+pE1TZj/tLQJLq3yxO3neZk020+QvqXUm3KYekMqu"
-	smtpHost := "email-smtp.eu-central-1.amazonaws.com"
 	smtpPort := "587"
 
 	// improve template add name surname ...
@@ -34,9 +32,8 @@ func SendEmail(invitation string, to string) error {
 	}
 	message += "\r\n" + base64.StdEncoding.EncodeToString([]byte(body))
 
-	auth := smtp.PlainAuth("", "AKIAW66CCHMX64VN5JD3", password, smtpHost)
-
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, []string{to}, []byte(message))
+	auth := smtp.PlainAuth("", Config.EmailVars.Username, Config.EmailVars.Password, Config.EmailVars.Host)
+	err := smtp.SendMail(Config.EmailVars.Host+":"+smtpPort, auth, from, []string{to}, []byte(message))
 	if err != nil {
 		return err
 	}

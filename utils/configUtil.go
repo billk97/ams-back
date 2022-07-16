@@ -18,9 +18,17 @@ type DB struct {
 	Port     int    `yaml:"port"`
 }
 
+type EmailVars struct {
+	Host     string
+	From     string
+	Password string
+	Username string
+}
+
 type Env struct {
-	DB    DB `yaml:"db"`
-	Aries string
+	DB        DB `yaml:"db"`
+	Aries     string
+	EmailVars EmailVars
 }
 
 var Config Env
@@ -46,4 +54,10 @@ func InitEnv() {
 	Config.DB.Username = os.Getenv("DB_USERNAME")
 	Config.DB.Password = os.Getenv("DB_PASSWORD")
 	Config.Aries = os.Getenv("ARIES_HOST")
+	Config.EmailVars = EmailVars{
+		Host:     os.Getenv("EMAIL_HOST"),
+		From:     os.Getenv("EMAIL_FROM"),
+		Password: os.Getenv("EMAIL_PASSWORD"),
+		Username: os.Getenv("EMAIL_USERNAME"),
+	}
 }

@@ -24,6 +24,10 @@ jobs:
         echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> env
         echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> env
         echo ARIES_HOST="http://acapy:8031" >> env
+        echo EMAIL_HOST="email-smtp.eu-central-1.amazonaws.com" >> env
+        echo EMAIL_FROM="no-replay@alphacorp.vsk.gr" >> env
+        echo EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} >> env
+        echo EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }} >> env
 
     - name: Docker Login
       uses: docker/login-action@v2
