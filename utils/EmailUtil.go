@@ -8,16 +8,14 @@ import (
 
 func SendEmail(invitation string, to string) error {
 	from := Config.EmailVars.From
-	fmt.Println(Config.EmailVars)
-	// Todo print info log
-	fmt.Println("sending an email to: " + to)
-	fmt.Println("invitation: ")
 	smtpPort := "587"
+	body := "👋 Welcome to Alphacorp❗️\n " +
+		"to activate your account please click the invitation link: \n" +
+		"http://localhost:8080/register/" + invitation + "\n" +
+		"Follow the instructions, download the app on your phone 📱 and get some credentials. 📜 \n \n" +
+		"*Ps: 'Please do not share this email' \n \n" +
+		"Alphacorp access management administration"
 
-	// improve template add name surname ...
-	body := "Welcome to Alphacorp to activate your account please click the invitation link http://localhost:8080/register/" + invitation
-
-	// todo improve headers
 	header := make(map[string]string)
 	header["From"] = from
 	header["To"] = to
@@ -31,7 +29,6 @@ func SendEmail(invitation string, to string) error {
 		message += fmt.Sprintf("%s: %s\r\n", k, v)
 	}
 	message += "\r\n" + base64.StdEncoding.EncodeToString([]byte(body))
-
 	auth := smtp.PlainAuth("", Config.EmailVars.Username, Config.EmailVars.Password, Config.EmailVars.Host)
 	err := smtp.SendMail(Config.EmailVars.Host+":"+smtpPort, auth, from, []string{to}, []byte(message))
 	if err != nil {

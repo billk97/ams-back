@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,8 +13,6 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Expose-Headers", "*, Authorization")
 		c.Writer.Header().Set("Referrer-Policy", "no-referrer-when-downgrade")
 		c.Writer.Header().Set("Strict-Transport-Security", "max-age=63072000")
-		c.Writer.Header().Set("skata2", "skata2")
-		fmt.Println("edooo")
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
