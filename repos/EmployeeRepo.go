@@ -3,27 +3,34 @@ package repos
 import (
 	"ams-back/database"
 	"ams-back/models"
-	"ams-back/utils"
-	"github.com/google/uuid"
 )
 
-func SaveEmploy(employee *models.Employee) (*models.Employee, error) {
-
-	// TODO convert it to usecase
+func SaveEmploy(employee *models.Employee) (uint, error) {
 	db := database.GetDb()
-	employee.Invitation = uuid.New().String()
 	result := db.Create(employee)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return employee.ID, nil
+}
+
+func GetEmployeeResources(id int) (*[]models.Resource, error) {
+	var resources *[]models.Resource
+	db := database.GetDb()
+	result := db.
+		Joins("JOIN employee_permissions ep on ep.permission_id = resources.permission_id").
+		Where("ep.employee_id=?", id).
+		Find(&resources)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	utils.SendEmail(employee.Invitation, employee.Email)
-	return employee, nil
-}
+	return resources, nil
 
-// todo add repository call get all rooms a user can access
+}
 
 func UpdateEmployee(employee *models.Employee) (*models.Employee, error) {
 	db := database.GetDb()
+	db.Model(employee).Association("Permission").Replace(employee.Permission)
 	result := db.Save(employee)
 	if result.Error != nil {
 		return nil, result.Error

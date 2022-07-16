@@ -12,18 +12,24 @@ type Filter struct {
 }
 
 type LdProof struct {
-	Credential struct {
-		Context           []string  `json:"@context"`
-		Type              []string  `json:"type"`
-		Issuer            string    `json:"issuer"`
-		IssuanceDate      time.Time `json:"issuanceDate"`
-		CredentialSubject struct {
-			Degree struct {
-				Type string `json:"type"`
-				Name string `json:"name"`
-			} `json:"degree"`
-			College string `json:"college"`
-		} `json:"credentialSubject"`
-	} `json:"credential"`
-	Options Options `json:"options"`
+	CredentialBody CredentialBody `json:"credential"`
+	Options        Options        `json:"options"`
+}
+
+type CredentialBody struct {
+	Context           []string          `json:"@context"`
+	Type              []string          `json:"type"`
+	Issuer            string            `json:"issuer"`
+	IssuanceDate      time.Time         `json:"issuanceDate"`
+	CredentialSubject CredentialSubject `json:"credentialSubject"`
+	Rooms             []string          `json:"rooms"`
+}
+
+// this is a must have property
+type CredentialSubject struct {
+	Id         string `json:"id"`
+	GivenName  string `json:"givenName"`
+	FamilyName string `json:"familyName"`
+	JobTitle   string `json:"jobTitle"`
+	Email      string `json:"email"`
 }

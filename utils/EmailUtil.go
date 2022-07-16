@@ -6,7 +6,7 @@ import (
 	"net/smtp"
 )
 
-func SendEmail(invitation string, to string) {
+func SendEmail(invitation string, to string) error {
 	from := "no-replay@alphacorp.vsk.gr"
 	fmt.Println("sending an email to: " + to)
 	fmt.Println("invitation: ")
@@ -38,9 +38,8 @@ func SendEmail(invitation string, to string) {
 
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, []string{to}, []byte(message))
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 	fmt.Println("Send successfully")
-
+	return nil
 }

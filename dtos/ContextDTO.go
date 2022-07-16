@@ -18,7 +18,7 @@ type Rooms struct {
 
 func NewContext() ContextDto {
 	capabilities := Rooms{
-		"cap:capabilities",
+		"room:rooms",
 		"@set",
 	}
 	context := Context{

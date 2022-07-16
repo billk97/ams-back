@@ -4,6 +4,7 @@ import (
 	"ams-back/dtos"
 	"ams-back/models"
 	"ams-back/repos"
+	"ams-back/usecases"
 	"ams-back/utils"
 	"fmt"
 	"strconv"
@@ -18,7 +19,23 @@ func CreateUrlController(r *gin.Engine) {
 		api.GET("/:id", getById)
 		api.POST("", createEmployee)
 		api.PUT("/:id", updateEmployeeData)
+		api.GET("/:id/resources", fetchEmployeeResources)
 	}
+}
+
+func fetchEmployeeResources(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, err)
+		return
+	}
+	resources, err := repos.GetEmployeeResources(id)
+	if err != nil {
+		c.JSON(400, err)
+		return
+	}
+	c.JSON(200, resources)
+
 }
 
 func getById(c *gin.Context) {
@@ -73,18 +90,19 @@ func createEmployee(c *gin.Context) {
 		c.JSON(400, apiErr)
 		return
 	}
-	e, err := repos.SaveEmploy(&emp)
-	if e == nil && err != nil {
+	id, useCaseErr := usecases.CreateEmployeeIfNotExists(&emp)
+	if useCaseErr != nil {
 		apiError := utils.NewApiError(
 			"PERSIST_ENTITY_FAILED",
-			err,
+			useCaseErr,
 			fmt.Sprintf("Could't persist entity of type employee"),
 		)
 		apiError.Enhance(c)
 		c.JSON(400, apiError)
 		return
 	}
-	c.JSON(200, emp)
+
+	c.JSON(200, dtos.IntegerDTO{int(id)})
 }
 
 func updateEmployeeData(c *gin.Context) {
