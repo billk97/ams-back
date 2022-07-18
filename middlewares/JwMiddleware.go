@@ -9,11 +9,11 @@ import (
 	"strings"
 )
 
-// todo get from .env
 var jwtSecret = []byte("secret")
 
 func JwtMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
+		jwtSecret = []byte(utils.Config.JwtSecret)
 		authHeader := context.Request.Header.Get("Authorization")
 		if authHeader == "" {
 			apiError := utils.NewApiError("INVALID_CREDENTIALS",

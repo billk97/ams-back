@@ -1,13 +1,10 @@
 package utils
 
 import (
-	"io/ioutil"
-	"log"
 	"os"
 	"strconv"
 
 	"github.com/joho/godotenv"
-	"gopkg.in/yaml.v3"
 )
 
 type DB struct {
@@ -29,22 +26,10 @@ type Env struct {
 	DB        DB `yaml:"db"`
 	Aries     string
 	EmailVars EmailVars
+	JwtSecret string
 }
 
 var Config Env
-
-func InitYamlConfig() {
-	file, err := ioutil.ReadFile("config.yaml")
-	if err != nil {
-		log.Fatal("Could not find config.yaml")
-		return
-	}
-	error := yaml.Unmarshal([]byte(file), &Config)
-	if error != nil {
-		log.Fatal("Failed to parce: Invaled yaml syntax!")
-		return
-	}
-}
 
 func InitEnv() {
 	godotenv.Load(".env")
@@ -60,4 +45,6 @@ func InitEnv() {
 		Password: os.Getenv("EMAIL_PASSWORD"),
 		Username: os.Getenv("EMAIL_USERNAME"),
 	}
+	Config.JwtSecret = os.Getenv("JWT_SECRET")
+	// todo add checks if empty
 }
