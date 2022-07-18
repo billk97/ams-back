@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ams-back/dtos"
+	"ams-back/middlewares"
 	"ams-back/repos"
 	"ams-back/usecases"
 	utils "ams-back/utils"
@@ -19,10 +20,14 @@ func CreateConnectionsController(r *gin.Engine) {
 		AriesHost = utils.Config.Aries
 	}
 	connectionUrl = utils.Config.Aries + "/connections"
+	secureApi := r.Group("api/connections")
 	api := r.Group("api/connections")
+	secureApi.Use(middlewares.JwtMiddleware())
+	{
+		secureApi.GET("", getConnections)
+	}
 	{
 		api.POST("/create-invitation/:uuid", createInvitation)
-		api.GET("", getConnections)
 		api.GET(":id", getConnectionById)
 		api.DELETE("/:id", deleteConnections)
 	}
