@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-var jwtSecret = []byte("skata")
+var jwtSecret = []byte("secret")
 
 func JwtMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
@@ -43,6 +43,7 @@ func JwtMiddleware() gin.HandlerFunc {
 			context.AbortWithStatusJSON(401, apiError)
 			return
 		}
+
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok && token.Valid {
 			apiError := utils.NewApiError("INVALID_CREDENTIALS",
