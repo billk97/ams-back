@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ams-back/dtos"
+	"ams-back/middlewares"
 	"ams-back/usecases"
 	"ams-back/utils"
 	"encoding/json"
@@ -18,12 +19,13 @@ func CreateIssueCredentialController(r *gin.Engine) {
 		AriesHost = utils.Config.Aries
 	}
 	issueCredentialUrl = AriesHost + "/issue-credential-2.0"
-	api := r.Group("api/issue-credentials")
+	secureApi := r.Group("api/issue-credentials")
+	secureApi.Use(middlewares.JwtMiddleware())
 	{
-		api.POST(":id", handleIssueCredential)
-		api.GET("", getCredentialsRecords)
-		api.GET(":id", getCredentialsRecordsByConnectionId)
-		api.DELETE(":state", deleteAllCredentialOfferByState)
+		secureApi.POST(":id", handleIssueCredential)
+		secureApi.GET("", getCredentialsRecords)
+		secureApi.GET(":id", getCredentialsRecordsByConnectionId)
+		secureApi.DELETE(":state", deleteAllCredentialOfferByState)
 	}
 }
 

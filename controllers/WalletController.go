@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"ams-back/middlewares"
 	"ams-back/usecases"
 	"ams-back/utils"
 	"fmt"
@@ -8,9 +9,10 @@ import (
 )
 
 func CreateWalletController(r *gin.Engine) {
-	api := r.Group("api/wallet")
+	secureApi := r.Group("api/wallet")
+	secureApi.Use(middlewares.JwtMiddleware())
 	{
-		api.GET("did/public", getPublicDid)
+		secureApi.GET("did/public", getPublicDid)
 	}
 }
 

@@ -21,15 +21,12 @@ func CreateConnectionsController(r *gin.Engine) {
 	}
 	connectionUrl = utils.Config.Aries + "/connections"
 	secureApi := r.Group("api/connections")
-	api := r.Group("api/connections")
 	secureApi.Use(middlewares.JwtMiddleware())
 	{
 		secureApi.GET("", getConnections)
-	}
-	{
-		api.POST("/create-invitation/:uuid", createInvitation)
-		api.GET(":id", getConnectionById)
-		api.DELETE("/:id", deleteConnections)
+		secureApi.POST("/create-invitation/:uuid", createInvitation)
+		secureApi.GET(":id", getConnectionById)
+		secureApi.DELETE("/:id", deleteConnections)
 	}
 }
 

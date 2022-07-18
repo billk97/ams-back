@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"ams-back/middlewares"
 	models "ams-back/models"
 	repos "ams-back/repos"
 	utils "ams-back/utils"
@@ -11,12 +12,13 @@ import (
 )
 
 func CreateResourceController(r *gin.Engine) {
-	api := r.Group("api/resource")
+	secureApi := r.Group("api/resource")
+	secureApi.Use(middlewares.JwtMiddleware())
 	{
-		api.GET("/:id", getResourceById)
-		api.GET("", getResources)
-		api.POST("", createResource)
-		api.PUT("/:id", updateResource)
+		secureApi.GET("/:id", getResourceById)
+		secureApi.GET("", getResources)
+		secureApi.POST("", createResource)
+		secureApi.PUT("/:id", updateResource)
 	}
 }
 
