@@ -20,6 +20,7 @@ func Login(dto dtos.CredentialDto) (*dtos.AccessDto, error) {
 	}
 	access := dtos.AccessDto{}
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{})
+	//todo get from .env
 	tokenString, singErr := jwtToken.SignedString([]byte("secret"))
 	if singErr != nil {
 		return nil, singErr

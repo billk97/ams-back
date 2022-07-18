@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// todo get from .env
 var jwtSecret = []byte("secret")
 
 func JwtMiddleware() gin.HandlerFunc {
