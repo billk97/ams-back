@@ -8,9 +8,10 @@ import (
 	utils "ams-back/utils"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 var connectionUrl = ""
@@ -24,9 +25,13 @@ func CreateConnectionsController(r *gin.Engine) {
 	secureApi.Use(middlewares.JwtMiddleware())
 	{
 		secureApi.GET("", getConnections)
-		secureApi.POST("/create-invitation/:uuid", createInvitation)
 		secureApi.GET(":id", getConnectionById)
 		secureApi.DELETE("/:id", deleteConnections)
+	}
+	api := r.Group("api/connections")
+
+	{
+		api.POST("/create-invitation/:uuid", createInvitation)
 	}
 }
 
