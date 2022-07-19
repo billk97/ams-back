@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"ams-back/middlewares"
 	models "ams-back/models"
 	repos "ams-back/repos"
 	utils "ams-back/utils"
@@ -11,10 +12,11 @@ import (
 )
 
 func CreatePermissionController(r *gin.Engine) {
-	api := r.Group("api/permissions")
+	secureApi := r.Group("api/permissions")
+	secureApi.Use(middlewares.JwtMiddleware())
 	{
-		api.GET("", getPermissions)
-		api.POST("", addPermission)
+		secureApi.GET("", getPermissions)
+		secureApi.POST("", addPermission)
 	}
 }
 

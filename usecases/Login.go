@@ -3,6 +3,7 @@ package usecases
 import (
 	"ams-back/dtos"
 	"ams-back/repos"
+	"ams-back/utils"
 	"errors"
 	"fmt"
 
@@ -20,7 +21,8 @@ func Login(dto dtos.CredentialDto) (*dtos.AccessDto, error) {
 	}
 	access := dtos.AccessDto{}
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{})
-	tokenString, singErr := jwtToken.SignedString([]byte("secret"))
+	jwtSecret := utils.Config.JwtSecret
+	tokenString, singErr := jwtToken.SignedString([]byte(jwtSecret))
 	if singErr != nil {
 		return nil, singErr
 	}

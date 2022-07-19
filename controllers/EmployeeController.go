@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ams-back/dtos"
+	"ams-back/middlewares"
 	"ams-back/models"
 	"ams-back/repos"
 	"ams-back/usecases"
@@ -13,13 +14,14 @@ import (
 )
 
 func CreateUrlController(r *gin.Engine) {
-	api := r.Group("api/employees")
+	secureApi := r.Group("api/employees")
+	secureApi.Use(middlewares.JwtMiddleware())
 	{
-		api.GET("", getAll)
-		api.GET("/:id", getById)
-		api.POST("", createEmployee)
-		api.PUT("/:id", updateEmployeeData)
-		api.GET("/:id/resources", fetchEmployeeResources)
+		secureApi.GET("", getAll)
+		secureApi.GET("/:id", getById)
+		secureApi.POST("", createEmployee)
+		secureApi.PUT("/:id", updateEmployeeData)
+		secureApi.GET("/:id/resources", fetchEmployeeResources)
 	}
 }
 

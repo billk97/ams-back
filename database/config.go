@@ -1,9 +1,10 @@
 package database
 
 import (
-	utils "ams-back/utils"
+	"ams-back/utils"
 	"fmt"
 	"log"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -12,7 +13,6 @@ import (
 
 var db *gorm.DB
 
-// TODO init a connection pull
 func InitDbConnection(config utils.DB) {
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s?parseTime=%t&loc=%s",
@@ -23,7 +23,6 @@ func InitDbConnection(config utils.DB) {
 		config.Name,
 		true,
 		"Local")
-	fmt.Printf(dsn)
 	dbc, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
@@ -31,6 +30,13 @@ func InitDbConnection(config utils.DB) {
 		fmt.Println("Database connection error: ", err)
 		return
 	}
+	sqlDb, err := dbc.DB()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	sqlDb.SetMaxIdleConns(10)
+	sqlDb.SetMaxOpenConns(100)
+	sqlDb.SetConnMaxLifetime(time.Hour)
 	db = dbc
 	log.Println("Database connection established")
 }

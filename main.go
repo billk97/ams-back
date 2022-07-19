@@ -14,6 +14,7 @@ func main() {
 	var config utils.Env
 	utils.InitEnv()
 	config = utils.Config
+
 	database.InitDbConnection(config.DB)
 	database.Synchronize(database.GetDb())
 	usecases.CreateSuperAdminIfNotExists()
@@ -30,6 +31,7 @@ func main() {
 	controllers.CreateIssueCredentialsWebhookController(r)
 	controllers.CreateContextController(r)
 	controllers.CreateIssueCredentialController(r)
+	controllers.CreateWalletController(r)
 
 	r.Run(":5000")
 }

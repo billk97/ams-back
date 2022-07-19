@@ -2,12 +2,14 @@ package controllers
 
 import (
 	"ams-back/dtos"
+	"ams-back/middlewares"
 	"ams-back/usecases"
 	"ams-back/utils"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 var issueCredentialUrl = ""
@@ -17,19 +19,26 @@ func CreateIssueCredentialController(r *gin.Engine) {
 		AriesHost = utils.Config.Aries
 	}
 	issueCredentialUrl = AriesHost + "/issue-credential-2.0"
-	api := r.Group("api/issue-credentials")
+	secureApi := r.Group("api/issue-credentials")
+	secureApi.Use(middlewares.JwtMiddleware())
 	{
-		api.POST("", handleIssueCredential)
-		api.GET("", getCredentialsRecords)
-		api.GET("/:id", getCredentialsRecordsByConnectionId)
+		secureApi.POST(":id", handleIssueCredential)
+		secureApi.GET("", getCredentialsRecords)
+		secureApi.GET(":id", getCredentialsRecordsByConnectionId)
+		secureApi.DELETE(":state", deleteAllCredentialOfferByState)
 	}
 }
 
 func handleIssueCredential(c *gin.Context) {
-	//dto := dtos.IssueCredentialDTO{}
-	//serializationError := c.Bind(&dto)
-	// TODO create credential
-	responseDTO, err := usecases.CreateAndSendIssueCredentialRequest(6)
+	id := c.Param("id")
+	employeeId, err := strconv.Atoi(id)
+	if err != nil {
+		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
+		apiError.Enhance(c)
+		c.JSON(400, apiError)
+		return
+	}
+	responseDTO, err := usecases.CreateAndSendIssueCredentialRequest(employeeId)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
 		apiError.Enhance(c)
@@ -37,26 +46,32 @@ func handleIssueCredential(c *gin.Context) {
 		return
 	}
 	c.JSON(200, responseDTO)
-	// todo make request to agent to issue credentials
 }
 
-func getCredentialsRecords(c *gin.Context) {
-	resp, err := http.Get(issueCredentialUrl + "/records")
+func deleteAllCredentialOfferByState(c *gin.Context) {
+	state := c.Param("state")
+	result, err := usecases.DeleteAllCredentialsOffersWithState(state)
 	if err != nil {
 		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
 		apiError.Enhance(c)
 		c.JSON(400, apiError)
+		return
 	}
-	body, err := ioutil.ReadAll(resp.Body)
+	dto := dtos.Wrapper{
+		Result: result,
+	}
+	c.JSON(200, &dto)
+}
+
+func getCredentialsRecords(c *gin.Context) {
+	dto, err := usecases.GetAllCredentialOffers()
 	if err != nil {
-		apiError := utils.NewApiError("DESIRIALIAZATION_ERROR", err, "details")
+		apiError := utils.NewApiError("REQUEST_FAILED", err, "details")
+		apiError.Enhance(c)
 		c.JSON(400, apiError)
 		return
 	}
-	jsonString := string(body)
-	var jsonMap map[string]interface{}
-	json.Unmarshal([]byte(jsonString), &jsonMap)
-	c.JSON(200, jsonMap)
+	c.JSON(200, dto)
 }
 
 func getCredentialsRecordsByConnectionId(c *gin.Context) {

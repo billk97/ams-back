@@ -12,4 +12,7 @@ type ConnectionDTO struct {
 	TheirRole          string `json:"their_role"`
 	RoutingState       string `json:"routing_state"`
 	ConnectionId       string `json:"connection_id"`
+	TheirDid           string `json:"their_did"`
+	TheirLabel         string `json:"their_label"`
+	MyDid              string `json:"my_did"`
 }
