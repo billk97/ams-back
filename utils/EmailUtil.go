@@ -8,10 +8,18 @@ import (
 
 func SendEmail(invitation string, to string) error {
 	from := Config.EmailVars.From
+	host := Config.HostDomain
+	protocol := "https"
+	if host == "localhost" {
+		host = host + ":8080"
+		protocol = "http"
+	}
+
 	smtpPort := "587"
+	// todo change url depending on the .env value
 	body := "👋 Welcome to Alphacorp❗️\n " +
 		"to activate your account please click the invitation link: \n" +
-		"http://localhost:8080/register/" + invitation + "\n" +
+		protocol + "://" + host + "/register/" + invitation + "\n" +
 		"Follow the instructions, download the app on your phone 📱 and get some credentials. 📜 \n \n" +
 		"*Ps: 'Please do not share this email' \n \n" +
 		"Alphacorp access management administration"
