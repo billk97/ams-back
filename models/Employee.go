@@ -12,7 +12,6 @@ type Employee struct {
 	Email           string       `json:"email" gorm:"size:255;UNIQUE_INDEX:invitation_index"`
 	Invitation      string       `json:"invitation" gorm:"size:255;UNIQUE_INDEX:invitation_index;"`
 	DidConnectionId string       `json:"didConnectionId" gorm:"size:255;"`
-	Did             string       `json:"did" gorm:"size:255;"`
 	Status          string       `json:"status" gorm:"size:255;"`
 	Permission      []Permission `json:"permissions" gorm:"many2many:employee_permissions;"`
 
