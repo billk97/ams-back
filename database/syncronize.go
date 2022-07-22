@@ -37,6 +37,13 @@ func Synchronize(db *gorm.DB) error {
 			},
 			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("resources") },
 		},
+		{
+			ID: "5",
+			Migrate: func(db *gorm.DB) error {
+				return db.AutoMigrate(models.VerifierToken{})
+			},
+			Rollback: func(db *gorm.DB) error { return db.Migrator().DropTable("verifier_token") },
+		},
 	})
 
 	return m.Migrate()

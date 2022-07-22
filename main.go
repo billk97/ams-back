@@ -32,6 +32,7 @@ func main() {
 	controllers.CreateContextController(r)
 	controllers.CreateIssueCredentialController(r)
 	controllers.CreateWalletController(r)
+	controllers.CreateVerifierTokenController(r)
 
 	r.Run(":5000")
 }
