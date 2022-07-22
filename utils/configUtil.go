@@ -23,10 +23,11 @@ type EmailVars struct {
 }
 
 type Env struct {
-	DB        DB `yaml:"db"`
-	Aries     string
-	EmailVars EmailVars
-	JwtSecret string
+	DB         DB `yaml:"db"`
+	Aries      string
+	EmailVars  EmailVars
+	JwtSecret  string
+	HostDomain string
 }
 
 var Config Env
@@ -46,5 +47,6 @@ func InitEnv() {
 		Username: os.Getenv("EMAIL_USERNAME"),
 	}
 	Config.JwtSecret = os.Getenv("JWT_SECRET")
+	Config.HostDomain = os.Getenv("HOST_DOMAIN")
 	// todo add checks if empty
 }
