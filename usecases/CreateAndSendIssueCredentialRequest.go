@@ -35,6 +35,7 @@ func CreateAndSendIssueCredentialRequest(employeeId int) (*dtos.CredExRecord, er
 
 func sendCredentialOffer(cred *dtos.IssueCredentialDTO) (*dtos.CredExRecord, error) {
 	url := fmt.Sprintf("%s/issue-credential-2.0/send", utils.Config.Aries)
+	fmt.Println("url: " + url)
 	body, err := json.Marshal(cred)
 	if err != nil {
 		return nil, err
@@ -75,7 +76,7 @@ func populateCredential(employee *models.Employee) (*dtos.IssueCredentialDTO, er
 				Context: []string{
 					"https://www.w3.org/2018/credentials/v1",
 					"https://api.alphacorp.vsk.gr/contexts/rooms/v1",
-					"http://192.168.1.4:5000/contexts/alphacorp-employee",
+					"https://api.alphacorp.vsk.gr/contexts/alphacorp-employee",
 				},
 				Type: []string{
 					"VerifiableCredential",
