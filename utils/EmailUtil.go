@@ -23,7 +23,6 @@ func SendEmail(invitation string, to string) error {
 		"Follow the instructions, download the app on your phone 📱 and get some credentials. 📜 \n \n" +
 		"*Ps: 'Please do not share this email' \n \n" +
 		"Alphacorp access management administration"
-
 	header := make(map[string]string)
 	header["From"] = from
 	header["To"] = to
