@@ -18,7 +18,6 @@ func main() {
 	database.InitDbConnection(config.DB)
 	database.Synchronize(database.GetDb())
 	usecases.CreateSuperAdminIfNotExists()
-
 	r := gin.Default()
 	r.Use(middlewares.JSONMiddleware())
 	r.Use(middlewares.CORSMiddleware())
