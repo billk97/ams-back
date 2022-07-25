@@ -19,7 +19,7 @@ type AlphaCorpEmployeeContext struct {
 	//Id                string      `json:"id"`
 	//Type              string      `json:"type"`
 	//AtId              string      `json:"@id"`
-	AlphaCorpEmployee AlphaCorpEmployee `json:"AlphaCorpEmployee"`
+	AlphaCorpEmployee AlphaCorpEmployee `json:"AlphacorpCredential"`
 	Person            string            `json:"Person"`
 }
 
