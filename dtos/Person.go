@@ -13,6 +13,9 @@ type AlphaCorpEmployeeContext struct {
 	FamilyName string  `json:"familyName"`
 	JobTitle   string  `json:"jobTitle"`
 	Email      string  `json:"email"`
+	Id         string  `json:"id"`
+	Type       string  `json:"type"`
+	atId       string  `json:"@id"`
 }
 
 func NewPersonContext() AlphaCorpEmployeeDTO {
@@ -25,6 +28,9 @@ func NewPersonContext() AlphaCorpEmployeeDTO {
 		"schema:familyName",
 		"schema:jobTitle",
 		"schema:email",
+		"@id",
+		"@type",
+		"https://api.alphacorp.vsk.gr/contexts/alphacorp-employee#AlphacorpCredential",
 	}
 	dto := AlphaCorpEmployeeDTO{
 		context,
