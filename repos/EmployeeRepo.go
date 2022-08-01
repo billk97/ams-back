@@ -58,6 +58,16 @@ func FindEmployeeByInvitation(invitation string) (*models.Employee, error) {
 	return &employee, nil
 }
 
+func FindEmployeeByConnectionId(id string) (*models.Employee, error) {
+	db := database.GetDb()
+	employee := models.Employee{}
+	result := db.Where("did_connection_id = ?", id).First(&employee)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &employee, nil
+}
+
 func FindEmployees(page int) (*[]models.Employee, error) {
 	offset := 0
 	if page > 0 {

@@ -27,9 +27,10 @@ type CredentialBody struct {
 
 // this is a must have property
 type CredentialSubject struct {
-	Id         string `json:"id"`
-	GivenName  string `json:"givenName"`
-	FamilyName string `json:"familyName"`
-	JobTitle   string `json:"jobTitle"`
-	Email      string `json:"email"`
+	CredentialType []string `json:"type"`
+	Id             string   `json:"id"`
+	GivenName      string   `json:"givenName"`
+	FamilyName     string   `json:"familyName"`
+	JobTitle       string   `json:"jobTitle"`
+	Email          string   `json:"email"`
 }
