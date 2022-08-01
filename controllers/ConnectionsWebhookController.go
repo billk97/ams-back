@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ams-back/dtos"
+	"ams-back/repos"
 	utils "ams-back/utils"
 	"encoding/json"
 	"fmt"
@@ -43,6 +44,19 @@ func connectionWebhook(c *gin.Context) {
 		err := requestReceived(&dto)
 		if err != nil {
 			c.JSON(400, err)
+			return
+		}
+		employee, databaseError := repos.FindEmployeeByConnectionId(dto.ConnectionId)
+		if databaseError != nil {
+			apiError := utils.NewApiError("FIND_RESOURCE_FAILED", databaseError, "failed to find employee")
+			c.JSON(400, apiError)
+			return
+		}
+		employee.Did = dto.TheirDid
+		_, databaseError = repos.UpdateEmployee(employee)
+		if databaseError != nil {
+			apiError := utils.NewApiError("UPDATE_RESOURCE_FAILED", databaseError, "failed to update employee daa")
+			c.JSON(400, apiError)
 			return
 		}
 	}

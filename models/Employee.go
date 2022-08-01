@@ -14,6 +14,7 @@ type Employee struct {
 	DidConnectionId string       `json:"didConnectionId" gorm:"size:255;"`
 	Status          string       `json:"status" gorm:"size:255;"`
 	Permission      []Permission `json:"permissions" gorm:"many2many:employee_permissions;"`
+	Did             string       `json:"did"`
 
 	// TODO add a state if a credential has been issued?
 }
