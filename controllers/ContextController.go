@@ -16,7 +16,7 @@ func CreateContextController(r *gin.Engine) {
 }
 
 func getContext(c *gin.Context) {
-	c.JSON(200, dtos.NewContext())
+	c.JSON(200, dtos.NewRoomContext())
 }
 
 func getPersonContext(c *gin.Context) {

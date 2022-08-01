@@ -80,7 +80,7 @@ func populateCredential(employee *models.Employee) (*dtos.IssueCredentialDTO, er
 				},
 				Type: []string{
 					"VerifiableCredential",
-					"RoomsCredential",
+					"RoomCredential",
 					"AlphacorpCredential",
 				},
 				Issuer:       fmt.Sprintf("did:%s:%s", didDTO.Method, didDTO.Did),
