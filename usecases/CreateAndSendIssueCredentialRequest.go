@@ -76,7 +76,7 @@ func populateCredential(employee *models.Employee) (*dtos.IssueCredentialDTO, er
 				Context: []string{
 					"https://www.w3.org/2018/credentials/v1",
 					"https://api.alphacorp.vsk.gr/contexts/rooms/v1",
-					"https://api.alphacorp.vsk.gr/contexts/alphacorp-employee",
+					"https://api.alphacorp.vsk.gr/contexts/alphacorp-employee/v1",
 				},
 				Type: []string{
 					"VerifiableCredential",
