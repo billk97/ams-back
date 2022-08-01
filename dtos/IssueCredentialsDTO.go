@@ -33,5 +33,5 @@ type CredentialSubject struct {
 	FamilyName     string   `json:"familyName"`
 	JobTitle       string   `json:"jobTitle"`
 	Email          string   `json:"email"`
-	RoomCredential []string `json:"roomCredential"`
+	RoomCredential []string `json:"RoomCredential"`
 }
