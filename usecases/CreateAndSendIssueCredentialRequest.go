@@ -26,6 +26,7 @@ func CreateAndSendIssueCredentialRequest(employeeId int) (*dtos.CredExRecord, er
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(cred)
 	resp, err := sendCredentialOffer(cred)
 	if err != nil {
 		return nil, err
