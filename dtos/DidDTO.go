@@ -11,3 +11,7 @@ type DidDTO struct {
 type WrapperDidDTO struct {
 	Result DidDTO `json:"result"`
 }
+
+type WrapperPrivateDidDTO struct {
+	Results []DidDTO `json:"results"`
+}

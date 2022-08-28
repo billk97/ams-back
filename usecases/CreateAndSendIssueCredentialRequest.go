@@ -61,7 +61,8 @@ func populateCredential(employee *models.Employee) (*dtos.IssueCredentialDTO, er
 	for _, s := range employee.Permission {
 		permissions = append(permissions, s.Alias)
 	}
-	didDTO, err := GetAriesPublicDid()
+	// didDTO, err := GetAriesPublicDid()
+	didDTO, err := GetAriesDidKey()
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +98,7 @@ func populateCredential(employee *models.Employee) (*dtos.IssueCredentialDTO, er
 			},
 
 			Options: dtos.Options{
-				ProofType: "Ed25519Signature2018",
+				ProofType: "BbsBlsSignature2020",
 			},
 		},
 	}
