@@ -85,7 +85,7 @@ func populateCredential(employee *models.Employee) (*dtos.IssueCredentialDTO, er
 					"RoomCredential",
 					"AlphacorpCredential",
 				},
-				Issuer:       fmt.Sprintf("did:%s:%s", didDTO.Method, didDTO.Did),
+				Issuer:       fmt.Sprintf("%s", didDTO.Did),
 				IssuanceDate: time.Now().UTC(),
 				CredentialSubject: dtos.CredentialSubject{
 					CredentialType: []string{"AlphacorpCredential", "RoomCredential"},
